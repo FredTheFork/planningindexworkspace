@@ -1,0 +1,2974 @@
+/* ==========================================================================
+   Planning Index Workspace - Premium Calendar v3.0
+   Construction-optimised calendar with premium SaaS aesthetics
+   Matches Expenses v3 design system exactly
+   ========================================================================== */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Design Tokens (Aligned with Expenses v3)
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-calendar-wrapper-v3 {
+  /* Brand Colors */
+  --pi-brand: #156349;
+  --pi-brand-hover: #0d4a36;
+  --pi-brand-light: #d1fae5;
+  --pi-brand-glow: rgba(21, 99, 73, 0.12);
+
+  /* Status Colors */
+  --pi-success: #10b981;
+  --pi-success-light: #d1fae5;
+  --pi-warning: #f59e0b;
+  --pi-warning-light: #fef3c7;
+  --pi-danger: #ef4444;
+  --pi-danger-light: #fef2f2;
+  --pi-info: #3b82f6;
+  --pi-info-light: #dbeafe;
+
+  /* Neutrals */
+  --pi-bg: #f8fafc;
+  --pi-card: #ffffff;
+  --pi-surface: #f1f5f9;
+  --pi-border: #e2e8f0;
+  --pi-border-light: #f1f5f9;
+  --pi-text: #0f172a;
+  --pi-text-secondary: #475569;
+  --pi-text-muted: #94a3b8;
+  --pi-text-light: #cbd5e1;
+
+  /* Calendar-specific colors */
+  --pi-cal-job: #10b981;
+  --pi-cal-visit: #3b82f6;
+  --pi-cal-delivery: #f97316;
+  --pi-cal-appointment: #8b5cf6;
+
+  /* Typography */
+  --pi-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --pi-mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing & Radius */
+  --pi-radius-sm: 6px;
+  --pi-radius: 8px;
+  --pi-radius-md: 10px;
+  --pi-radius-lg: 12px;
+  --pi-radius-xl: 16px;
+
+  /* Shadows */
+  --pi-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --pi-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --pi-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --pi-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --pi-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+  /* Layout - Using viewport-relative units for fluid scaling */
+  --header-height: calc(4vh + 32px);
+  --filter-height: calc(3.5vh + 24px);
+  
+  /* Fluid typography base */
+  font-size: clamp(14px, 0.9vw + 8px, 16px);
+
+  font-family: var(--pi-font);
+  color: var(--pi-text);
+  background: var(--pi-bg);
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Reset
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-calendar-wrapper-v3 *,
+.pi-calendar-wrapper-v3 *::before,
+.pi-calendar-wrapper-v3 *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Auth Required State
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-auth-required {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  color: var(--pi-text-secondary);
+  background: var(--pi-bg);
+  padding: clamp(1.5rem, 4vh, 3rem);
+}
+
+.pi-auth-icon {
+  color: var(--pi-brand);
+  margin-bottom: clamp(1rem, 2.5vh, 1.5rem);
+  opacity: 0.8;
+  width: clamp(40px, 5vw, 64px);
+  height: clamp(40px, 5vw, 64px);
+}
+
+.pi-auth-required h3 {
+  font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);
+  font-weight: 600;
+  color: var(--pi-text);
+  margin-bottom: 0.5rem;
+}
+
+.pi-auth-required p {
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  color: var(--pi-text-muted);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Premium SaaS Header - Fluid Layout
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-saas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 clamp(0.75rem, 1.5vw, 1.5rem);
+  background: #1b2534;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+.pi-cal-header-left {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  flex-shrink: 0;
+}
+
+.pi-cal-brand {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.6vw, 0.75rem);
+  color: #fff;
+}
+
+.pi-cal-brand svg {
+  width: clamp(20px, 1.5vw, 28px);
+  height: clamp(20px, 1.5vw, 28px);
+  color: var(--pi-brand);
+}
+
+.pi-cal-brand-text h1 {
+  font-size: clamp(1rem, 1.25vw + 0.25rem, 1.25rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.pi-cal-breadcrumb {
+  font-size: clamp(0.625rem, 0.75vw, 0.75rem);
+  color: var(--pi-text-muted);
+  display: block;
+}
+
+/* KPI Pills - Fluid sizing */
+.pi-cal-kpi-bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.6vw, 0.75rem);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.pi-cal-kpi-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(0.125rem, 0.4vh, 0.25rem) clamp(0.375rem, 0.75vw, 0.875rem);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  min-width: auto;
+}
+
+.pi-cal-kpi-pill--warning {
+  background: transparent;
+  border: none;
+}
+
+.pi-cal-kpi-pill--warning .pi-cal-kpi-value {
+  color: var(--pi-warning);
+}
+
+.pi-cal-kpi-pill--warning .pi-cal-kpi-label {
+  color: rgba(245, 158, 11, 0.8);
+}
+
+.pi-cal-kpi-pill--alert {
+  background: transparent;
+  border: none;
+  animation: piCalPulse 2s infinite;
+}
+
+.pi-cal-kpi-pill--alert .pi-cal-kpi-value {
+  color: var(--pi-danger);
+}
+
+.pi-cal-kpi-pill--alert .pi-cal-kpi-label {
+  color: rgba(239, 68, 68, 0.8);
+}
+
+@keyframes piCalPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.pi-cal-kpi-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: var(--pi-mono);
+  line-height: 1;
+  display: block;
+  margin-top: clamp(0.125rem, 0.25vh, 0.25rem);
+}
+
+.pi-cal-kpi-label {
+  font-size: clamp(0.5rem, 0.625vw, 0.625rem);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  margin-top: clamp(0.0625rem, 0.125vh, 0.125rem);
+  display: block;
+}
+
+/* Header Right Actions - Fluid responsive */
+.pi-cal-header-right {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+  height: clamp(32px, 4vh, 40px) !important;
+  min-height: clamp(32px, 4vh, 40px) !important;
+  max-height: clamp(32px, 4vh, 40px) !important;
+}
+
+.pi-cal-header-right-inner {
+  display: flex !important;
+  align-items: center !important;
+  gap: clamp(0.25rem, 0.4vw, 0.75rem) !important;
+  height: clamp(32px, 4vh, 40px) !important;
+  min-height: clamp(32px, 4vh, 40px) !important;
+  max-height: clamp(32px, 4vh, 40px) !important;
+  flex-wrap: nowrap !important;
+}
+
+/* REMOVED: margin-top hack causing misalignment */
+/*.pi-cal-header-right .pi-cal-btn,
+.pi-cal-header-right .pi-cal-search-box {
+  margin-top: -5px !important;
+}*/
+
+/* Uncommon fix: Search box as flex container with explicit height - AGGRESSIVE PATTERN */
+.pi-cal-search-box {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  height: clamp(32px, 4vh, 40px) !important;
+  min-height: clamp(32px, 4vh, 40px) !important;
+  max-height: clamp(32px, 4vh, 40px) !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  width: clamp(140px, 12vw, 220px);
+}
+
+.pi-cal-search-icon {
+  position: absolute;
+  left: clamp(0.5rem, 1vw, 0.75rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(14px, 1.2vw, 16px);
+  height: clamp(14px, 1.2vw, 16px);
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#pi-cal-search-input {
+  width: 100%;
+  height: clamp(32px, 4vh, 40px);
+  padding: 0 clamp(1.5rem, 2.5vw, 2.5rem) 0 clamp(1.5rem, 2.5vw, 2.5rem);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--pi-radius);
+  color: #fff;
+  font-size: clamp(0.75rem, 0.9vw, 0.875rem);
+  transition: all 0.2s ease;
+  line-height: 1;
+  align-self: center;
+}
+
+#pi-cal-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+#pi-cal-search-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pi-cal-search-clear {
+  position: absolute;
+  right: clamp(0.375rem, 0.75vw, 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(20px, 2vw, 24px);
+  height: clamp(20px, 2vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  border-radius: var(--pi-radius-sm);
+  transition: all 0.2s ease;
+}
+
+.pi-cal-search-clear:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Responsive Search Bar
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pi-cal-search-box {
+    position: relative !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    overflow: hidden !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--pi-radius) !important;
+    cursor: pointer !important;
+  }
+
+  .pi-cal-search-box.pi-cal-search-expanded {
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    cursor: default !important;
+  }
+
+  .pi-cal-search-icon {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 16px !important;
+    height: 16px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+    transition: opacity 0.2s ease !important;
+  }
+
+  .pi-cal-search-box.pi-cal-search-expanded .pi-cal-search-icon {
+    left: 0.75rem !important;
+    transform: translateY(-50%) !important;
+    opacity: 0.5 !important;
+  }
+
+  #pi-cal-search-input {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 2.5rem 0 2.5rem !important;
+    background: transparent !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 0.875rem !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.3s ease 0.1s !important;
+    cursor: text !important;
+  }
+
+  .pi-cal-search-box.pi-cal-search-expanded #pi-cal-search-input {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .pi-cal-search-clear {
+    position: absolute !important;
+    right: 0.5rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    cursor: pointer !important;
+    border-radius: var(--pi-radius-sm) !important;
+    transition: all 0.2s ease !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    z-index: 3 !important;
+  }
+
+  .pi-cal-search-box.pi-cal-search-expanded .pi-cal-search-clear {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .pi-cal-search-clear:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+  }
+
+  /* Adjust header right section for mobile */
+  .pi-cal-header-right {
+    gap: 0.5rem !important;
+  }
+
+  .pi-cal-header-right-inner {
+    gap: 0.5rem !important;
+  }
+
+  /* Hide placeholder text in collapsed state */
+  .pi-cal-search-box:not(.pi-cal-search-expanded) #pi-cal-search-input::placeholder {
+    color: transparent !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .pi-cal-search-box.pi-cal-search-expanded {
+    width: 160px !important;
+    min-width: 160px !important;
+    max-width: 160px !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Buttons - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-btn {
+  height: clamp(32px, 4vh, 40px) !important;
+  min-height: clamp(32px, 4vh, 40px) !important;
+  max-height: clamp(32px, 4vh, 40px) !important;
+  padding: 0 clamp(0.5rem, 0.8vw, 1rem) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(0.25rem, 0.4vw, 0.5rem) !important;
+  border-radius: var(--pi-radius) !important;
+  font-size: clamp(0.75rem, 0.9vw, 0.875rem) !important;
+  font-weight: 500 !important;
+  font-family: inherit !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.pi-cal-btn svg,
+.pi-cal-btn > span {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.pi-cal-btn svg,
+.pi-cal-search-icon,
+.pi-cal-search-clear svg {
+  /* Uncommon: Force SVG to not participate in text baseline */
+  display: flex;
+  align-self: center;
+  /* Uncommon: SVG dominant-baseline fix for icon fonts */
+  dominant-baseline: central;
+  /* Uncommon: Prevent SVG from affecting parent line-height */
+  vertical-align: top;
+}
+
+.pi-cal-btn--primary {
+  background: var(--pi-brand) !important;
+  color: #fff !important;
+  border: 1px solid var(--pi-brand) !important;
+}
+
+.pi-cal-btn--primary:hover {
+  background: var(--pi-brand-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(21, 99, 73, 0.35);
+}
+
+.pi-cal-btn--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pi-cal-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.pi-cal-btn--ghost {
+  background: transparent;
+  color: var(--pi-text-secondary);
+  border: 1px solid transparent;
+}
+
+.pi-cal-btn--ghost:hover {
+  background: var(--pi-surface);
+  color: var(--pi-text);
+  border-color: var(--pi-border);
+}
+
+.pi-cal-btn--danger {
+  background: var(--pi-danger);
+  color: #fff;
+}
+
+.pi-cal-btn--danger:hover {
+  background: #dc2626;
+}
+
+.pi-cal-btn--sm {
+  height: 32px;
+  padding: 0 0.75rem;
+  font-size: 0.8125rem;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Filter Bar - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.5rem, 1.5vh, 0.75rem) clamp(0.75rem, 1.5vw, 1.5rem);
+  background: var(--pi-card);
+  border-bottom: 1px solid var(--pi-border);
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+.pi-cal-filters-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.75vw, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.pi-cal-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.125rem, 0.3vh, 0.25rem);
+}
+
+.pi-cal-filter-group label {
+  font-size: clamp(0.625rem, 0.75vw, 0.6875rem);
+  font-weight: 600;
+  color: var(--pi-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pi-cal-select {
+  height: clamp(32px, 3.5vh, 36px);
+  padding: 0 clamp(1.25rem, 1.8vw, 2rem) 0 clamp(0.375rem, 0.8vw, 0.75rem);
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-sm);
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  color: var(--pi-text);
+  min-width: clamp(100px, 10vw, 140px);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right clamp(0.375rem, 0.6vw, 0.625rem) center;
+  transition: all 0.2s ease;
+}
+
+.pi-cal-select:hover {
+  border-color: var(--pi-text-muted);
+}
+
+.pi-cal-select:focus {
+  outline: none;
+  border-color: var(--pi-brand);
+  box-shadow: 0 0 0 3px var(--pi-brand-glow);
+}
+
+.pi-cal-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 0.4vw, 0.5rem);
+}
+
+/* Legend */
+.pi-cal-legend {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  flex-shrink: 0;
+}
+
+.pi-cal-legend-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 0.4vw, 0.375rem);
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  color: var(--pi-text-muted);
+  font-weight: 500;
+}
+
+.pi-cal-legend-dot {
+  width: clamp(6px, 0.7vw, 8px);
+  height: clamp(6px, 0.7vw, 8px);
+  border-radius: 50%;
+}
+
+.pi-cal-legend-dot--job { background: var(--pi-cal-job); }
+.pi-cal-legend-dot--visit { background: var(--pi-cal-visit); }
+.pi-cal-legend-dot--delivery { background: var(--pi-cal-delivery); }
+.pi-cal-legend-dot--appointment { background: var(--pi-cal-appointment); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Main Content Area - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-main {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - var(--header-height) - var(--filter-height) - clamp(80px, 10vh, 120px));
+}
+
+.pi-cal-calendar-container {
+  flex: 1;
+  padding: clamp(0.75rem, 1.5vh, 1rem) clamp(0.75rem, 1.5vw, 1.5rem);
+  transition: margin-right 0.3s ease;
+}
+
+.pi-cal-calendar-container.pi-cal-with-sidebar {
+  margin-right: clamp(280px, 22vw, 320px);
+}
+
+/* View Toggle - Fluid */
+.pi-cal-view-toggle {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.125rem, 0.25vw, 0.25rem);
+  margin-bottom: clamp(0.75rem, 1.5vh, 1rem);
+  background: var(--pi-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  padding: 0.25rem;
+  width: fit-content;
+}
+
+.pi-cal-view-btn {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.5vw, 0.5rem);
+  height: clamp(28px, 3.5vh, 32px);
+  padding: 0 clamp(0.625rem, 1vw, 0.875rem);
+  background: transparent;
+  border: none;
+  border-radius: var(--pi-radius-sm);
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pi-cal-view-btn svg {
+  width: clamp(12px, 1.1vw, 14px);
+  height: clamp(12px, 1.1vw, 14px);
+}
+
+/* Calendar Card - Fluid */
+.pi-cal-calendar-card {
+  background: var(--pi-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-lg);
+  box-shadow: var(--pi-shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+.pi-cal-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.pi-cal-spinner {
+  width: clamp(32px, 3vw, 40px);
+  height: clamp(32px, 3vw, 40px);
+  border: 3px solid var(--pi-border);
+  border-top-color: var(--pi-brand);
+  border-radius: 50%;
+  animation: piCalSpin 0.8s linear infinite;
+}
+
+@keyframes piCalSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Job Sidebar - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-job-sidebar {
+  position: fixed;
+  right: 0;
+  top: var(--header-height);
+  width: clamp(280px, 22vw, 320px);
+  height: calc(100vh - var(--header-height));
+  background: var(--pi-card);
+  border-left: 1px solid var(--pi-border);
+  box-shadow: var(--pi-shadow-lg);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  animation: piCalSlideIn 0.3s ease;
+}
+
+@keyframes piCalSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.pi-cal-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 1.5vw, 1.25rem);
+  border-bottom: 1px solid var(--pi-border);
+}
+
+.pi-cal-sidebar-header h3 {
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  font-weight: 600;
+  color: var(--pi-text);
+}
+
+.pi-cal-sidebar-close {
+  width: clamp(28px, 2.5vw, 32px);
+  height: clamp(28px, 2.5vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--pi-text-muted);
+  cursor: pointer;
+  border-radius: var(--pi-radius-sm);
+  transition: all 0.2s ease;
+}
+
+.pi-cal-sidebar-close:hover {
+  background: var(--pi-surface);
+  color: var(--pi-text);
+}
+
+.pi-cal-job-selector {
+  padding: clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 1.5vw, 1.25rem);
+  border-bottom: 1px solid var(--pi-border);
+}
+
+.pi-cal-job-mini-gantt {
+  flex: 1;
+  overflow-y: auto;
+  padding: clamp(0.5rem, 1vh, 0.75rem);
+}
+
+.pi-cal-gantt-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  padding: clamp(0.5rem, 1vh, 0.75rem);
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  margin-bottom: clamp(0.375rem, 0.75vh, 0.5rem);
+}
+
+.pi-cal-gantt-item--done {
+  opacity: 0.6;
+}
+
+.pi-cal-gantt-icon {
+  width: clamp(24px, 2vw, 28px);
+  height: clamp(24px, 2vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pi-brand-light);
+  color: var(--pi-brand);
+  border-radius: var(--pi-radius-sm);
+  flex-shrink: 0;
+}
+
+.pi-cal-gantt-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pi-cal-gantt-title {
+  display: block;
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pi-cal-gantt-date {
+  display: block;
+  font-size: clamp(0.625rem, 0.75vw, 0.6875rem);
+  color: var(--pi-text-muted);
+}
+
+.pi-cal-gantt-check {
+  width: clamp(18px, 1.5vw, 20px);
+  height: clamp(18px, 1.5vw, 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pi-success);
+  color: #fff;
+  border-radius: 50%;
+  font-size: clamp(0.625rem, 0.75vw, 0.75rem);
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Quick Links Bar - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-quick-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 0.5vw, 0.5rem);
+  padding: clamp(0.5rem, 1.5vh, 0.75rem) clamp(0.75rem, 1.5vw, 1.5rem);
+  background: #f8fafc;
+  border-top: 1px solid var(--pi-border);
+}
+
+.pi-cal-quick-links-label {
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  font-weight: 600;
+  color: var(--pi-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: clamp(0.375rem, 0.75vw, 0.5rem);
+}
+
+.pi-cal-quick-link {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.5vw, 0.5rem);
+  height: clamp(28px, 3.5vh, 32px);
+  padding: 0 clamp(0.5rem, 1vw, 0.75rem);
+  background: var(--pi-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pi-cal-quick-link:hover {
+  background: var(--pi-brand-light);
+  border-color: var(--pi-brand);
+  color: var(--pi-brand);
+}
+
+.pi-cal-quick-link.active {
+  background: var(--pi-brand);
+  border-color: var(--pi-brand);
+  color: #fff;
+}
+
+.pi-cal-quick-link svg {
+  width: clamp(12px, 1.1vw, 14px);
+  height: clamp(12px, 1.1vw, 14px);
+}
+
+.pi-cal-quick-link-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(16px, 1.5vw, 18px);
+  height: clamp(16px, 1.5vw, 18px);
+  padding: 0 clamp(3px, 0.4vw, 5px);
+  background: var(--pi-brand);
+  color: #fff;
+  font-size: clamp(0.625rem, 0.75vw, 0.6875rem);
+  font-weight: 600;
+  border-radius: 9px;
+  margin-left: 0.25rem;
+}
+
+.pi-cal-quick-link-badge--alert {
+  background: var(--pi-danger);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Keyboard Shortcuts Panel - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-shortcuts-panel {
+  position: fixed;
+  bottom: clamp(1rem, 2vh, 1.5rem);
+  left: clamp(1rem, 2vw, 1.5rem);
+  background: var(--pi-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-lg);
+  box-shadow: var(--pi-shadow-lg);
+  z-index: 95;
+  width: clamp(260px, 22vw, 280px);
+  animation: piCalFadeUp 0.2s ease;
+}
+
+@keyframes piCalFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pi-cal-shortcuts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.75rem, 1.5vh, 0.875rem) clamp(0.875rem, 1.5vw, 1rem);
+  border-bottom: 1px solid var(--pi-border);
+}
+
+.pi-cal-shortcuts-header h3 {
+  font-size: clamp(0.8125rem, 0.9vw, 0.875rem);
+  font-weight: 600;
+  color: var(--pi-text);
+}
+
+.pi-cal-shortcuts-close {
+  width: clamp(22px, 2vw, 24px);
+  height: clamp(22px, 2vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--pi-text-muted);
+  cursor: pointer;
+  border-radius: var(--pi-radius-sm);
+  transition: all 0.2s ease;
+}
+
+.pi-cal-shortcuts-close:hover {
+  background: var(--pi-surface);
+  color: var(--pi-text);
+}
+
+.pi-cal-shortcuts-body {
+  padding: clamp(0.625rem, 1vh, 0.75rem) clamp(0.875rem, 1.5vw, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.375rem, 0.75vh, 0.5rem);
+}
+
+.pi-cal-shortcut-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+}
+
+.pi-cal-shortcut-item kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(22px, 2vw, 24px);
+  height: clamp(22px, 2vw, 24px);
+  padding: 0 clamp(4px, 0.5vw, 6px);
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-sm);
+  font-size: clamp(0.625rem, 0.75vw, 0.6875rem);
+  font-weight: 600;
+  font-family: var(--pi-mono);
+  color: var(--pi-text-secondary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.pi-cal-shortcut-item span {
+  color: var(--pi-text-secondary);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Modals - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-modal-backdrop {
+  position: fixed;
+  inset: clamp(-20px, -2vw, -40px);
+  min-height: 100vh;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: clamp(0.75rem, 1.5vh, 1rem);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  overflow-y: auto;
+}
+
+.pi-cal-modal-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.pi-cal-modal-backdrop.pi-cal-modal-open {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+
+body.pi-cal-modal-scroll-lock {
+  overflow: hidden;
+}
+
+.pi-cal-modal {
+  width: 100%;
+  max-width: min(600px, 90vw);
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: var(--pi-radius-xl);
+  box-shadow: var(--pi-shadow-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(20px) scale(0.98);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  position: relative;
+  z-index: 1;
+}
+
+.pi-cal-modal-backdrop.pi-cal-modal-open .pi-cal-modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.pi-cal-modal--large {
+  max-width: min(800px, 95vw);
+}
+
+.pi-cal-modal--small {
+  max-width: min(400px, 85vw);
+}
+
+/* Modal Header - Fluid */
+.pi-cal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(1rem, 2vh, 1.25rem) clamp(1rem, 2vw, 1.25rem);
+  border-bottom: 1px solid var(--pi-border);
+  flex-shrink: 0;
+}
+
+.pi-cal-modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1vw, 0.875rem);
+}
+
+.pi-cal-modal-icon {
+  width: clamp(32px, 3vw, 40px);
+  height: clamp(32px, 3vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pi-brand-light);
+  color: var(--pi-brand);
+  border-radius: var(--pi-radius);
+  flex-shrink: 0;
+}
+
+.pi-cal-modal-icon svg {
+  width: clamp(16px, 1.5vw, 20px);
+  height: clamp(16px, 1.5vw, 20px);
+}
+
+.pi-cal-modal-icon--warning {
+  background: var(--pi-warning-light);
+  color: var(--pi-warning);
+}
+
+.pi-cal-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.0625rem, 0.25vh, 0.125rem);
+}
+
+.pi-cal-modal-header h2 {
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  font-weight: 600;
+  color: var(--pi-text);
+  line-height: 1.2;
+}
+
+.pi-cal-modal-subtitle {
+  font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+  color: var(--pi-text-muted);
+}
+
+.pi-cal-modal-close {
+  width: clamp(28px, 2.5vw, 32px);
+  height: clamp(28px, 2.5vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--pi-text-muted);
+  cursor: pointer;
+  border-radius: var(--pi-radius-sm);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pi-cal-modal-close:hover {
+  background: var(--pi-surface);
+  color: var(--pi-text);
+}
+
+/* Modal Tabs - Fluid */
+.pi-cal-modal-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 clamp(1rem, 2vw, 1.25rem);
+  border-bottom: 1px solid var(--pi-border);
+  background: var(--pi-surface);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pi-cal-modal-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.pi-cal-tab-btn {
+  height: clamp(40px, 4.5vh, 44px);
+  padding: 0 clamp(0.875rem, 1.25vw, 1rem);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.pi-cal-tab-btn:hover {
+  color: var(--pi-text);
+}
+
+.pi-cal-tab-btn.active {
+  color: var(--pi-brand);
+  border-bottom-color: var(--pi-brand);
+  background: var(--pi-card);
+}
+
+/* Modal Body - Fluid */
+.pi-cal-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: clamp(1rem, 2vh, 1.5rem);
+}
+
+.pi-cal-tab-content {
+  display: none;
+}
+
+.pi-cal-tab-content.active {
+  display: block;
+  animation: piCalFadeIn 0.2s ease;
+}
+
+@keyframes piCalFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal Footer - Fluid */
+.pi-cal-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.875rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem);
+  background: var(--pi-surface);
+  border-top: 1px solid var(--pi-border);
+  flex-shrink: 0;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
+.pi-cal-modal-footer-left,
+.pi-cal-modal-footer-right {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.6vw, 0.75rem);
+}
+
+.pi-cal-modal-footer .pi-cal-btn {
+  height: clamp(36px, 4vh, 40px);
+  padding: 0 clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 500;
+}
+
+.pi-cal-modal-footer .pi-cal-btn svg + span,
+.pi-cal-modal-footer .pi-cal-btn > span {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Form Fields - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+  width: 100%;
+}
+
+.pi-cal-field-grid .pi-cal-field {
+  margin-bottom: 0;
+  width: 100%;
+  min-width: 0;
+}
+
+.pi-cal-field {
+  margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.pi-cal-field:last-child {
+  margin-bottom: 0;
+}
+
+.pi-cal-field > label {
+  display: block;
+  font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+  margin-bottom: clamp(0.25rem, 0.5vh, 0.375rem);
+}
+
+.pi-cal-required {
+  color: var(--pi-danger);
+}
+
+.pi-cal-input,
+.pi-cal-textarea,
+.pi-cal-modal .pi-cal-select {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  height: clamp(36px, 4vh, 40px);
+  padding: 0 clamp(0.625rem, 1vw, 0.75rem);
+  background: var(--pi-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  font-size: clamp(0.8125rem, 0.9vw, 0.875rem);
+  font-family: inherit;
+  color: var(--pi-text);
+  transition: all 0.2s ease;
+}
+
+.pi-cal-input:hover,
+.pi-cal-textarea:hover,
+.pi-cal-modal .pi-cal-select:hover {
+  border-color: var(--pi-text-muted);
+}
+
+.pi-cal-input:focus,
+.pi-cal-textarea:focus,
+.pi-cal-modal .pi-cal-select:focus {
+  outline: none;
+  border-color: var(--pi-brand);
+  box-shadow: 0 0 0 3px var(--pi-brand-glow);
+}
+
+.pi-cal-input-error {
+  border-color: var(--pi-danger) !important;
+  background: var(--pi-danger-light) !important;
+}
+
+.pi-cal-field-error {
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  color: var(--pi-danger);
+  margin-top: 0.25rem;
+  display: none;
+}
+
+.pi-cal-field-error:has(+ .pi-cal-input-error) {
+  display: block;
+}
+
+.pi-cal-field-help {
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  color: var(--pi-text-muted);
+  margin-top: 0.25rem;
+}
+
+.pi-cal-textarea {
+  height: auto;
+  min-height: clamp(80px, 10vh, 100px);
+  padding: clamp(0.625rem, 1vh, 0.75rem);
+  resize: vertical;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.pi-cal-input--multi {
+  height: auto;
+  min-height: clamp(100px, 12vh, 120px);
+  padding: 0.5rem;
+}
+
+.pi-cal-input--multi option {
+  padding: clamp(0.25rem, 0.5vh, 0.375rem) clamp(0.375rem, 0.75vw, 0.5rem);
+  border-radius: var(--pi-radius-sm);
+}
+
+.pi-cal-input--multi option:checked {
+  background: var(--pi-brand-light);
+  color: var(--pi-brand);
+  font-weight: 500;
+}
+
+/* Inline fields */
+.pi-cal-field--inline {
+  display: flex;
+  align-items: center;
+}
+
+.pi-cal-field--inline {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 0.75vw, 0.625rem);
+  margin-bottom: 0;
+}
+
+/* Toggle Switch - Simple Uiverse Style */
+.pi-cal-toggle {
+  font-size: 17px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+/* Hide default HTML checkbox */
+.pi-cal-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.pi-cal-toggle-slider {
+  position: relative;
+  cursor: pointer;
+  width: 62px;
+  height: 35px;
+  background: #e2e8f0;
+  transition: .4s;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  flex-shrink: 0;
+}
+
+.pi-cal-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  box-shadow: 0 2px 5px #999999;
+  transition: .4s;
+}
+
+.pi-cal-toggle input:checked + .pi-cal-toggle-slider {
+  background-color: var(--pi-brand, #156349);
+  border: 1px solid transparent;
+}
+
+.pi-cal-toggle input:checked + .pi-cal-toggle-slider:before {
+  transform: translateX(27px);
+}
+
+.pi-cal-toggle-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--pi-text);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Checklist - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-checklist {
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  padding: clamp(0.625rem, 1vh, 0.75rem);
+  min-height: clamp(100px, 12vh, 120px);
+}
+
+.pi-cal-checklist-empty {
+  text-align: center;
+  padding: clamp(1.5rem, 3vh, 2rem);
+  color: var(--pi-text-muted);
+  font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+}
+
+.pi-cal-checklist-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  padding: clamp(0.375rem, 0.75vh, 0.5rem);
+  background: var(--pi-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-sm);
+  margin-bottom: clamp(0.375rem, 0.75vh, 0.5rem);
+}
+
+.pi-cal-checklist-item--done {
+  opacity: 0.6;
+}
+
+.pi-cal-checklist-item--done .pi-cal-checklist-text {
+  text-decoration: line-through;
+}
+
+.pi-cal-checklist-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pi-cal-checklist-checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.pi-cal-checkbox-custom {
+  width: clamp(16px, 1.5vw, 18px);
+  height: clamp(16px, 1.5vw, 18px);
+  border: 2px solid var(--pi-border);
+  border-radius: var(--pi-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.pi-cal-checklist-checkbox input:checked + .pi-cal-checkbox-custom {
+  background: var(--pi-brand);
+  border-color: var(--pi-brand);
+}
+
+.pi-cal-checklist-checkbox input:checked + .pi-cal-checkbox-custom::after {
+  content: '';
+  width: clamp(5px, 0.5vw, 6px);
+  height: clamp(8px, 0.8vw, 10px);
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.pi-cal-checklist-text {
+  flex: 1;
+  font-size: clamp(0.8125rem, 0.9vw, 0.875rem);
+}
+
+.pi-cal-checklist-delete {
+  width: clamp(22px, 2vw, 24px);
+  height: clamp(22px, 2vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--pi-text-muted);
+  cursor: pointer;
+  border-radius: var(--pi-radius-sm);
+  transition: all 0.2s ease;
+}
+
+.pi-cal-checklist-delete:hover {
+  background: var(--pi-danger-light);
+  color: var(--pi-danger);
+}
+
+.pi-cal-checklist-add {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.375rem, 0.75vw, 0.5rem);
+  margin-top: clamp(0.625rem, 1vh, 0.75rem);
+  width: 100%;
+}
+
+.pi-cal-checklist-add .pi-cal-input {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Conflict Warning
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-conflict-warning {
+  background: var(--pi-warning-light);
+  border: 1px solid var(--pi-warning);
+  border-radius: var(--pi-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pi-cal-conflict-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--pi-warning);
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.pi-cal-conflict-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pi-cal-conflict-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: var(--pi-radius-sm);
+  font-size: 0.8125rem;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Linked Expenses
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-linked-expenses {
+  min-height: 120px;
+}
+
+.pi-cal-linked-expense-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  margin-bottom: 0.5rem;
+}
+
+.pi-cal-expense-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.pi-cal-expense-supplier {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--pi-text);
+}
+
+.pi-cal-expense-category {
+  font-size: 0.75rem;
+  color: var(--pi-text-muted);
+}
+
+.pi-cal-expense-amount {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--pi-brand);
+  font-family: var(--pi-mono);
+}
+
+.pi-cal-expense-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--pi-border);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Templates
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-templates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.pi-cal-template-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  transition: all 0.2s ease;
+}
+
+.pi-cal-template-item:hover {
+  border-color: var(--pi-brand);
+  box-shadow: var(--pi-shadow-sm);
+}
+
+.pi-cal-template-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--pi-text);
+  margin-bottom: 0.25rem;
+}
+
+.pi-cal-template-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.pi-cal-template-type {
+  color: var(--pi-text-muted);
+}
+
+.pi-cal-template-duration {
+  color: var(--pi-text-muted);
+  background: var(--pi-border-light);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--pi-radius-sm);
+}
+
+.pi-cal-template-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pi-cal-priority-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.pi-cal-priority-badge--low { background: var(--pi-info-light); color: var(--pi-info); }
+.pi-cal-priority-badge--medium { background: var(--pi-border-light); color: var(--pi-text-muted); }
+.pi-cal-priority-badge--high { background: var(--pi-warning-light); color: var(--pi-warning); }
+.pi-cal-priority-badge--critical { background: var(--pi-danger-light); color: var(--pi-danger); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Lookahead
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-lookahead-content {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.pi-cal-lookahead-week {
+  margin-bottom: 1.5rem;
+}
+
+.pi-cal-lookahead-week h4 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--pi-text);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--pi-border);
+}
+
+.pi-cal-lookahead-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  margin-bottom: 0.5rem;
+}
+
+.pi-cal-lookahead-item--high {
+  border-left: 3px solid var(--pi-warning);
+}
+
+.pi-cal-lookahead-item--critical {
+  border-left: 3px solid var(--pi-danger);
+}
+
+.pi-cal-lookahead-date {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--pi-text-muted);
+  min-width: 80px;
+  text-transform: uppercase;
+}
+
+.pi-cal-lookahead-title {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--pi-text);
+}
+
+.pi-cal-lookahead-weather {
+  font-size: 1rem;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Context Menu - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-context-menu {
+  position: fixed;
+  background: var(--pi-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  box-shadow: var(--pi-shadow-lg);
+  z-index: 99999;
+  min-width: clamp(160px, 15vw, 180px);
+  padding: clamp(0.25rem, 0.5vh, 0.375rem);
+  animation: piCalContextIn 0.15s ease;
+}
+
+@keyframes piCalContextIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.pi-cal-context-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 0.75vw, 0.625rem);
+  width: 100%;
+  padding: clamp(0.375rem, 0.75vh, 0.5rem) clamp(0.625rem, 1vw, 0.75rem);
+  background: transparent;
+  border: none;
+  border-radius: var(--pi-radius-sm);
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pi-cal-context-item:hover {
+  background: var(--pi-surface);
+  color: var(--pi-text);
+}
+
+.pi-cal-context-item svg {
+  width: clamp(14px, 1.25vw, 16px);
+  height: clamp(14px, 1.25vw, 16px);
+  flex-shrink: 0;
+}
+
+.pi-cal-context-item--danger {
+  color: var(--pi-danger);
+  background-color: var(--pi-danger);
+}
+
+.pi-cal-context-item--danger:hover {
+  background: var(--pi-danger-light);
+}
+
+.pi-cal-context-divider {
+  height: 1px;
+  background: var(--pi-border);
+  margin: clamp(0.25rem, 0.5vh, 0.375rem) 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Toast Notifications - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-toast-container {
+  position: fixed;
+  bottom: clamp(1rem, 2vh, 1.5rem);
+  right: clamp(1rem, 2vw, 1.5rem);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.375rem, 0.75vh, 0.5rem);
+  pointer-events: none;
+}
+
+.pi-cal-toast {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.625rem, 1vw, 0.75rem);
+  padding: clamp(0.875rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem);
+  background: #0f172a;
+  color: #fff;
+  border-radius: var(--pi-radius);
+  font-size: clamp(0.8125rem, 0.9vw, 0.875rem);
+  font-weight: 500;
+  box-shadow: var(--pi-shadow-xl);
+  pointer-events: auto;
+  min-width: clamp(260px, 24vw, 280px);
+  max-width: clamp(360px, 32vw, 400px);
+  animation: piCalToastIn 0.3s ease forwards;
+}
+
+.pi-cal-toast--success { border-left: 3px solid var(--pi-success); }
+.pi-cal-toast--error { border-left: 3px solid var(--pi-danger); }
+.pi-cal-toast--warning { border-left: 3px solid var(--pi-warning); }
+.pi-cal-toast--info { border-left: 3px solid var(--pi-info); }
+
+.pi-cal-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-cal-toast-icon svg {
+  width: clamp(16px, 1.5vw, 18px);
+  height: clamp(16px, 1.5vw, 18px);
+}
+
+@keyframes piCalToastIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes piCalToastOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   FullCalendar Customization - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-calendar-wrapper-v3 .fc {
+  --fc-small-font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: var(--pi-bg);
+  --fc-border-color: var(--pi-border);
+  --fc-button-text-color: var(--pi-text-secondary);
+  --fc-button-bg-color: var(--pi-surface);
+  --fc-button-border-color: var(--pi-border);
+  --fc-button-hover-bg-color: var(--pi-border-light);
+  --fc-button-hover-border-color: var(--pi-border);
+  --fc-button-active-bg-color: var(--pi-brand);
+  --fc-button-active-border-color: var(--pi-brand);
+  --fc-today-bg-color: rgba(21, 99, 73, 0.06);
+  --fc-event-text-color: #fff;
+  font-family: var(--pi-font);
+}
+
+.pi-calendar-wrapper-v3 .fc-toolbar.fc-header-toolbar {
+  margin-bottom: clamp(0.75rem, 1.5vh, 1rem);
+  padding: clamp(0.75rem, 1.5vh, 1rem) clamp(0.375rem, 0.75vw, 0.5rem) 0;
+}
+
+.pi-calendar-wrapper-v3 .fc-toolbar-title {
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  font-weight: 600;
+  color: var(--pi-text);
+}
+
+.pi-calendar-wrapper-v3 .fc .fc-button {
+  border-radius: var(--pi-radius);
+  padding: clamp(0.375rem, 0.75vh, 0.5rem) clamp(0.75rem, 1.25vw, 0.875rem);
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  font-weight: 500;
+  text-transform: none;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.pi-calendar-wrapper-v3 .fc .fc-button:hover {
+  background: var(--pi-border-light);
+}
+
+.pi-calendar-wrapper-v3 .fc .fc-button-primary:not(:disabled).fc-button-active,
+.pi-calendar-wrapper-v3 .fc .fc-button-primary:not(:disabled):active {
+  background: var(--pi-brand);
+  border-color: var(--pi-brand);
+  color: #fff;
+}
+
+.pi-calendar-wrapper-v3 .fc-prev-button,
+.pi-calendar-wrapper-v3 .fc-next-button {
+  width: clamp(32px, 3vw, 36px);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-calendar-wrapper-v3 .fc-today-button {
+  font-weight: 600;
+}
+
+.pi-calendar-wrapper-v3 .fc-col-header-cell {
+  padding: clamp(0.625rem, 1vh, 0.75rem) 0;
+  background: var(--pi-surface);
+}
+
+.pi-calendar-wrapper-v3 .fc-col-header-cell-cushion {
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pi-text-muted);
+  text-decoration: none;
+}
+
+/* Day cells - Fluid */
+.pi-calendar-wrapper-v3 .fc-daygrid-day {
+  transition: background 0.15s ease;
+}
+
+.pi-calendar-wrapper-v3 .fc-daygrid-day:hover {
+  background: rgba(21, 99, 73, 0.02);
+}
+
+.pi-cal-day-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.125rem, 0.25vh, 0.25rem);
+}
+
+.pi-cal-day-number {
+  font-size: clamp(0.75rem, 0.85vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+  width: clamp(24px, 2vw, 28px);
+  height: clamp(24px, 2vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.pi-calendar-wrapper-v3 .fc-day-today .pi-cal-day-number {
+  background: var(--pi-brand);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* List view */
+.pi-calendar-wrapper-v3 .fc-list {
+  border: none;
+}
+
+.pi-calendar-wrapper-v3 .fc-list-day-cushion {
+  background: var(--pi-surface);
+  padding: 0.75rem 1rem;
+}
+
+/* Today indicators for week/day views */
+.pi-calendar-wrapper-v3 .fc-timeGridWeek-view .fc-timegrid-col.fc-day-today,
+.pi-calendar-wrapper-v3 .fc-timeGrid-view[data-view="week"] .fc-timegrid-col.fc-day-today {
+  background: rgba(21, 99, 73, 0.04);
+}
+
+.pi-calendar-wrapper-v3 .fc-timeGridWeek-view .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion,
+.pi-calendar-wrapper-v3 .fc-timeGrid-view[data-view="week"] .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion {
+  color: var(--pi-brand);
+  font-weight: 600;
+}
+
+/* Day view: hide day number dot completely */
+.pi-calendar-wrapper-v3 .fc-timeGridDay-view .fc-day-today .pi-cal-day-number,
+.pi-calendar-wrapper-v3 .fc-timeGrid-view[data-view="day"] .fc-day-today .pi-cal-day-number {
+  background: transparent;
+  color: var(--pi-text-secondary);
+  font-weight: 500;
+}
+
+/* Keep now indicator line visible in all views */
+.pi-calendar-wrapper-v3 .fc-timegrid-now-indicator-line {
+  border-color: var(--pi-danger);
+  border-width: 2px;
+}
+
+.pi-calendar-wrapper-v3 .fc-timegrid-now-indicator-arrow {
+  border-color: var(--pi-danger);
+  color: var(--pi-danger);
+}
+
+.pi-cal-weather-indicator {
+  color: var(--pi-text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.pi-cal-weather-bad {
+  color: var(--pi-warning);
+}
+
+/* Events */
+.pi-calendar-wrapper-v3 .fc-event {
+  border-radius: var(--pi-radius-sm);
+  border: none;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--pi-shadow-sm);
+}
+
+.pi-calendar-wrapper-v3 .fc-event:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--pi-shadow-md);
+  z-index: 10;
+}
+
+.pi-calendar-wrapper-v3 .fc-event[data-priority="critical"] {
+  box-shadow: 0 0 0 2px var(--pi-danger), var(--pi-shadow-sm);
+}
+
+.pi-calendar-wrapper-v3 .fc-event[data-priority="high"] {
+  border-left: 3px solid var(--pi-warning);
+}
+
+.pi-cal-event-weather-warning {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: var(--pi-warning);
+}
+
+/* List view */
+.pi-calendar-wrapper-v3 .fc-list {
+  border: none;
+}
+
+.pi-calendar-wrapper-v3 .fc-list-day-cushion {
+  background: var(--pi-surface);
+  padding: 0.75rem 1rem;
+}
+
+.pi-calendar-wrapper-v3 .fc-list-event:hover td {
+  background: rgba(21, 99, 73, 0.04);
+}
+
+/* Now indicator */
+.pi-calendar-wrapper-v3 .fc-timegrid-now-indicator-line {
+  border-color: var(--pi-danger);
+  border-width: 2px;
+}
+
+.pi-calendar-wrapper-v3 .fc-timegrid-now-indicator-arrow {
+  border-color: var(--pi-danger);
+  color: var(--pi-danger);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Empty States - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-empty-state {
+  text-align: center;
+  padding: clamp(2rem, 4vh, 3rem) clamp(1rem, 2vw, 1.5rem);
+  color: var(--pi-text-muted);
+}
+
+.pi-cal-empty-state svg {
+  width: clamp(40px, 4vw, 48px);
+  height: clamp(40px, 4vw, 48px);
+  margin-bottom: clamp(0.75rem, 1.5vh, 1rem);
+  opacity: 0.4;
+}
+
+.pi-cal-empty-state p {
+  font-size: clamp(0.875rem, 1vw, 0.9375rem);
+  font-weight: 500;
+  color: var(--pi-text);
+  margin-bottom: 0.25rem;
+}
+
+.pi-cal-empty-state span {
+  font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+}
+
+.pi-cal-empty-state--small {
+  text-align: center;
+  padding: clamp(1.5rem, 3vh, 2rem) clamp(0.75rem, 1.5vw, 1rem);
+  color: var(--pi-text-muted);
+}
+
+.pi-cal-empty-state--small svg {
+  width: clamp(28px, 2.5vw, 32px);
+  height: clamp(28px, 2.5vw, 32px);
+  margin-bottom: clamp(0.5rem, 1vh, 0.75rem);
+  opacity: 0.4;
+}
+
+.pi-cal-empty-state--small p {
+  font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Mileage Form - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-mileage-form {
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  padding: clamp(0.75rem, 1.5vh, 1rem);
+  margin-top: clamp(0.75rem, 1.5vh, 1rem);
+}
+
+.pi-cal-mileage-estimate {
+  margin-top: clamp(0.625rem, 1vh, 0.75rem);
+  padding: clamp(0.625rem, 1vh, 0.75rem);
+  background: var(--pi-brand-light);
+  border-radius: var(--pi-radius-sm);
+  font-size: clamp(0.75rem, 0.9vw, 0.8125rem);
+  color: var(--pi-brand);
+  font-weight: 500;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Attachments - Fluid responsive
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-attachments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 12vw, 140px), 1fr));
+  gap: clamp(0.625rem, 1vw, 0.75rem);
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+.pi-cal-attachments-grid:only-child {
+  grid-template-columns: 1fr;
+}
+
+.pi-cal-attachment-upload {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.375rem, 0.75vh, 0.5rem);
+  padding: clamp(0.75rem, 1.5vh, 1rem);
+  background: var(--pi-surface);
+  border: 2px dashed var(--pi-border);
+  border-radius: var(--pi-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.pi-cal-attachment-upload:hover {
+  border-color: var(--pi-brand);
+  background: var(--pi-brand-light);
+}
+
+.pi-cal-attachment-upload svg {
+  color: var(--pi-text-muted);
+  width: clamp(20px, 2vw, 24px);
+  height: clamp(20px, 2vw, 24px);
+}
+
+.pi-cal-attachment-upload span {
+  font-size: clamp(0.6875rem, 0.8vw, 0.75rem);
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+}
+
+.pi-cal-attachment-upload small {
+  font-size: clamp(0.625rem, 0.75vw, 0.6875rem);
+  color: var(--pi-text-muted);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Weather Preview
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-weather-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Responsive Design
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .pi-cal-kpi-bar {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pi-cal-saas-header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 0.75rem 1rem;
+  }
+
+  .pi-cal-brand-text h1 {
+    font-size: 1rem;
+  }
+
+  .pi-cal-breadcrumb {
+    display: none;
+  }
+
+  .pi-cal-search-box {
+    width: 180px;
+  }
+
+  .pi-cal-header-right .pi-cal-btn span {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .pi-cal-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem 1rem;
+  }
+
+  .pi-cal-filters-inner {
+    justify-content: stretch;
+  }
+
+  .pi-cal-filter-group {
+    flex: 1;
+  }
+
+  .pi-cal-select {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .pi-cal-legend {
+    justify-content: center;
+  }
+
+  .pi-cal-main {
+    flex-direction: column;
+  }
+
+  .pi-cal-calendar-container {
+    padding: 0.75rem;
+  }
+
+  .pi-cal-calendar-container.pi-cal-with-sidebar {
+    margin-right: 0;
+  }
+
+  .pi-cal-job-sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+  }
+
+  .pi-cal-quick-links {
+    flex-wrap: wrap;
+    padding: 0.75rem;
+  }
+
+  .pi-cal-modal {
+    max-width: 100%;
+    margin: 0.5rem;
+    max-height: calc(100vh - 1rem);
+  }
+
+  .pi-cal-modal--large {
+    max-width: 100%;
+  }
+
+  .pi-cal-field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pi-cal-modal-tabs {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pi-cal-view-toggle {
+    flex-wrap: wrap;
+  }
+
+  .pi-cal-toast-container {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .pi-cal-toast {
+    min-width: 0;
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .pi-cal-brand svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .pi-cal-search-box {
+    width: 140px;
+  }
+
+  .pi-cal-header-right {
+    gap: 0.375rem;
+  }
+
+  .pi-cal-btn {
+    height: 36px;
+    padding: 0 0.625rem;
+  }
+
+  .pi-cal-modal-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .pi-cal-modal-footer-left,
+  .pi-cal-modal-footer-right {
+    justify-content: stretch;
+  }
+
+  .pi-cal-modal-footer .pi-cal-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Print Styles
+   ────────────────────────────────────────────────────────────────────────── */
+@media print {
+  .pi-cal-saas-header,
+  .pi-cal-filter-bar,
+  .pi-cal-quick-links,
+  .pi-cal-shortcuts-panel,
+  .pi-cal-modal-backdrop,
+  .pi-cal-toast-container,
+  .pi-cal-context-menu,
+  .pi-cal-view-toggle,
+  .pi-cal-job-sidebar {
+    display: none !important;
+  }
+
+  .pi-calendar-wrapper-v3 {
+    background: #fff;
+  }
+
+  .pi-cal-calendar-card {
+    border: none;
+    box-shadow: none;
+  }
+
+  .pi-calendar-wrapper-v3 .fc-event {
+    page-break-inside: avoid;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Accessibility
+   ────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.pi-calendar-wrapper-v3 *:focus-visible {
+  outline: 2px solid var(--pi-brand);
+  outline-offset: 2px;
+}
+
+.pi-calendar-wrapper-v3 button:focus-visible {
+  outline-offset: 1px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .pi-calendar-wrapper-v3 {
+    --pi-border: #94a3b8;
+    --pi-text-muted: #64748b;
+  }
+
+  .pi-calendar-wrapper-v3 .fc-event {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Event Modal Footer Layout
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-modal-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+.pi-cal-modal-footer-left {
+  display: flex !important;
+  gap: clamp(0.25rem, 0.4vw, 0.5rem);
+  align-items: center;
+}
+
+.pi-cal-modal-footer-right {
+  display: flex !important;
+  gap: clamp(0.25rem, 0.4vw, 0.5rem);
+  align-items: center;
+  margin-left: auto;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Event Modal Header Title Styling
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-modal-header-left {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.pi-cal-modal-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.pi-cal-modal-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--pi-brand);
+}
+
+.pi-cal-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pi-cal-modal-title-group h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--pi-text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.pi-cal-modal-subtitle {
+  font-size: 0.875rem;
+  color: var(--pi-text-muted);
+  margin-top: 2px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Lookahead Modal Styles
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-lookahead-week {
+  margin-bottom: 1.5rem;
+}
+
+.pi-cal-lookahead-week h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--pi-text);
+  padding: 0.5rem 0;
+  border-bottom: 2px solid var(--pi-brand);
+  margin-bottom: 0.75rem;
+}
+
+.pi-cal-lookahead-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.pi-cal-lookahead-item:hover {
+  background: var(--pi-brand-light);
+  border-color: var(--pi-brand);
+  transform: translateX(4px);
+}
+
+.pi-cal-lookahead-item--critical {
+  border-left: 3px solid #dc2626;
+  background: rgba(220, 38, 38, 0.05);
+}
+
+.pi-cal-lookahead-item--high {
+  border-left: 3px solid #f97316;
+  background: rgba(249, 115, 22, 0.05);
+}
+
+.pi-cal-lookahead-icon {
+  color: var(--pi-brand);
+  flex-shrink: 0;
+}
+
+.pi-cal-lookahead-date {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.pi-cal-lookahead-title {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--pi-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pi-cal-lookahead-type {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.5rem;
+  background: var(--pi-border);
+  border-radius: var(--pi-radius-sm);
+  color: var(--pi-text-muted);
+  flex-shrink: 0;
+}
+
+.pi-cal-lookahead-weather {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Templates Modal Styles
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-template-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--pi-surface);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius);
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.pi-cal-template-item:hover {
+  background: var(--pi-card);
+  border-color: var(--pi-brand);
+  box-shadow: var(--pi-shadow-sm);
+}
+
+.pi-cal-template-info {
+  flex: 1;
+}
+
+.pi-cal-template-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--pi-text);
+  margin-bottom: 0.25rem;
+}
+
+.pi-cal-template-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--pi-text-muted);
+}
+
+.pi-cal-template-type {
+  padding: 0.125rem 0.375rem;
+  background: var(--pi-border);
+  border-radius: var(--pi-radius-sm);
+  text-transform: capitalize;
+}
+
+.pi-cal-template-duration {
+  color: var(--pi-brand);
+  font-weight: 500;
+}
+
+.pi-cal-template-actions {
+  display: flex;
+  gap: clamp(0.25rem, 0.4vw, 0.5rem);
+}
+
+/* Explicit Use button styling */
+.pi-cal-template-actions .pi-cal-btn[data-action="use"] {
+  background: #22c55e !important;
+  color: #fff !important;
+  border-color: #22c55e !important;
+}
+
+.pi-cal-template-actions .pi-cal-btn[data-action="use"]:hover {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Dark Mode Support (CSS Variables)
+   ────────────────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .pi-calendar-wrapper-v3.supports-dark {
+    --pi-bg: #0f172a;
+    --pi-card: #1e293b;
+    --pi-surface: #334155;
+    --pi-border: #475569;
+    --pi-border-light: #334155;
+    --pi-text: #f8fafc;
+    --pi-text-secondary: #cbd5e1;
+    --pi-text-muted: #94a3b8;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Toggle Switch - Fixed Animation
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pi-cal-toggle input[type="checkbox"] {
+  display: none !important;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.pi-cal-toggle-slider {
+  width: 44px;
+  height: 24px;
+  background: #cbd5e1 !important;
+  border-radius: 12px;
+  position: relative;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.pi-cal-toggle-slider::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  will-change: transform;
+}
+
+/* Checked state - slider turns green */
+.pi-cal-toggle input[type="checkbox"]:checked ~ .pi-cal-toggle-slider {
+  background: #156349 !important;
+  border-color: #156349;
+}
+
+.pi-cal-toggle input[type="checkbox"]:checked ~ .pi-cal-toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* Active/pressed state */
+.pi-cal-toggle:active .pi-cal-toggle-slider::before {
+  width: 22px;
+}
+
+.pi-cal-toggle input[type="checkbox"]:checked:active ~ .pi-cal-toggle-slider::before {
+  transform: translateX(18px);
+}
+
+/* Focus state for accessibility */
+.pi-cal-toggle input[type="checkbox"]:focus ~ .pi-cal-toggle-slider {
+  box-shadow: 0 0 0 3px rgba(21, 99, 73, 0.12);
+}
+
+/* Disabled state */
+.pi-cal-toggle input[type="checkbox"]:disabled ~ .pi-cal-toggle-slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pi-cal-toggle-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Enhanced Timeline View Styles
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-cal-timeline-view {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pi-cal-timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 12px 12px 0 0;
+}
+
+.timeline-header-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.timeline-header-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.timeline-legend {
+  display: flex;
+  gap: 12px;
+}
+
+.timeline-legend-item {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.timeline-legend-item.timeline-job {
+  color: #10b981;
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.timeline-legend-item.timeline-visit {
+  color: #3b82f6;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.timeline-legend-item.timeline-delivery {
+  color: #f97316;
+  border-color: #f97316;
+  background: rgba(249, 115, 22, 0.1);
+}
+
+.timeline-legend-item.timeline-appointment {
+  color: #8b5cf6;
+  border-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.fc-list-event.timeline-job {
+  border-left: 4px solid #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.fc-list-event.timeline-visit {
+  border-left: 4px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.fc-list-event.timeline-delivery {
+  border-left: 4px solid #f97316;
+  background: rgba(249, 115, 22, 0.05);
+}
+
+.fc-list-event.timeline-appointment {
+  border-left: 4px solid #8b5cf6;
+  background: rgba(139, 92, 246, 0.05);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Weather Icon Positioning - Always Under Day Number
+   ────────────────────────────────────────────────────────────────────────── */
+.fc-daygrid-day-number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+}
+
+.weather-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.weather-indicator:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.weather-indicator .weather-svg-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  display: block !important;
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.weather-indicator:hover .weather-svg-icon {
+  opacity: 1;
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Ensure weather indicators are visible */
+.weather-indicator {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.fc-daygrid-day-number {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+}
+
+/* Color variations for different weather types */
+.weather-indicator[data-weather="clear"] svg { stroke: #f59e0b; }
+.weather-indicator[data-weather="cloud"] svg { stroke: #64748b; }
+.weather-indicator[data-weather="rain"] svg { stroke: #3b82f6; }
+.weather-indicator[data-weather="snow"] svg { stroke: #94a3b8; }
+.weather-indicator[data-weather="storm"] svg { stroke: #8b5cf6; }
+
+/* Ensure weather icon never appears before day number */
+.fc-daygrid-day-number .weather-indicator {
+  order: 2; /* Always after the day number */
+}
+

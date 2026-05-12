@@ -1,0 +1,2102 @@
+/* ==========================================================================
+   Job-Specific Calendar - Minified FullCalendar Implementation
+   Matches main calendar design but job-specific only
+   ========================================================================== */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Wrapper & Header
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-calendar-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  height: 100%;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pi-job-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.pi-job-calendar-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-job-calendar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.pi-job-calendar-actions .pi-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.pi-job-calendar-actions .pi-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pi-job-calendar-actions .pi-btn-primary {
+  background: #156349;
+  color: white;
+  border: none;
+}
+
+.pi-job-calendar-actions .pi-btn-primary:hover {
+  background: #0d4a36;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(21, 99, 73, 0.25);
+}
+
+.pi-job-calendar-actions .pi-btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.pi-job-calendar-actions .pi-btn-secondary:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Calendar Container
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-calendar-container {
+  flex: 1;
+  min-height: 500px;
+  height: 100%;
+  padding: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ensure calendar shows even when parent is initially hidden */
+#job-tab-schedule {
+  min-height: 600px;
+}
+
+#job-tab-schedule.active {
+  display: flex !important;
+  flex-direction: column;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   FullCalendar Customization - Exact match to main calendar
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-calendar-container .fc {
+  --fc-small-font-size: 13px;
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: #f1f5f9;
+  --fc-border-color: #e2e8f0;
+  --fc-button-text-color: #475569;
+  --fc-button-bg-color: #f1f5f9;
+  --fc-button-border-color: #e2e8f0;
+  --fc-button-hover-bg-color: #e2e8f0;
+  --fc-button-hover-border-color: #e2e8f0;
+  --fc-button-active-bg-color: #156349;
+  --fc-button-active-border-color: #156349;
+  --fc-today-bg-color: rgba(21, 99, 73, 0.06);
+  --fc-event-text-color: #fff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  height: 100%;
+}
+
+/* Header Toolbar - Exact match */
+.pi-job-calendar-container .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 16px;
+  padding: 12px 8px 0;
+}
+
+.pi-job-calendar-container .fc-toolbar-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* All Buttons - Enhanced Styling */
+.pi-job-calendar-container .fc .fc-button {
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  color: #374151;
+  position: relative;
+  overflow: hidden;
+}
+
+.pi-job-calendar-container .fc .fc-button:hover {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-color: rgba(21, 99, 73, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.pi-job-calendar-container .fc .fc-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Active/Selected buttons - Beautiful Green */
+.pi-job-calendar-container .fc .fc-button-primary:not(:disabled).fc-button-active,
+.pi-job-calendar-container .fc .fc-button-primary:not(:disabled):active {
+  background: linear-gradient(135deg, #156349 0%, #16a34a 100%);
+  border-color: #156349;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(21, 99, 73, 0.3);
+  transform: translateY(-1px);
+}
+
+.pi-job-calendar-container .fc .fc-button-primary:not(:disabled).fc-button-active:hover,
+.pi-job-calendar-container .fc .fc-button-primary:not(:disabled):active:hover {
+  background: linear-gradient(135deg, #0d4a36 0%, #15803d 100%);
+  box-shadow: 0 6px 20px rgba(21, 99, 73, 0.4);
+}
+
+/* Prev/Next Arrow Buttons - Enhanced */
+.pi-job-calendar-container .fc-prev-button,
+.pi-job-calendar-container .fc-next-button {
+  width: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.pi-job-calendar-container .fc-prev-button:hover,
+.pi-job-calendar-container .fc-next-button:hover {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-color: rgba(21, 99, 73, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.pi-job-calendar-container .fc-prev-button .fc-icon,
+.pi-job-calendar-container .fc-next-button .fc-icon {
+  font-size: 16px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.pi-job-calendar-container .fc-prev-button:hover .fc-icon,
+.pi-job-calendar-container .fc-next-button:hover .fc-icon {
+  color: #156349;
+}
+
+/* Today Button - Enhanced */
+.pi-job-calendar-container .fc-today-button {
+  font-weight: 600 !important;
+  height: 40px !important;
+  padding: 0 20px !important;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-color: #3b82f6;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.pi-job-calendar-container .fc-today-button:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+/* View Toggle Buttons (Month/Week/Day/List) - Enhanced */
+.pi-job-calendar-container .fc-button-group {
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.pi-job-calendar-container .fc-button-group .fc-button {
+  height: 36px !important;
+  padding: 0 14px !important;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  color: #64748b;
+}
+
+.pi-job-calendar-container .fc-button-group .fc-button:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(21, 99, 73, 0.1);
+  color: #374151;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.pi-job-calendar-container .fc-button-group .fc-button.fc-button-active {
+  background: linear-gradient(135deg, #156349 0%, #16a34a 100%);
+  border-color: #156349;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(21, 99, 73, 0.3);
+}
+
+/* Day Headers */
+.pi-job-calendar-container .fc-col-header-cell {
+  padding: 10px 0;
+  background: #f1f5f9;
+}
+
+.pi-job-calendar-container .fc-col-header-cell-cushion {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  text-decoration: none;
+}
+
+/* Day cells */
+.pi-job-calendar-container .fc-daygrid-day {
+  transition: background 0.15s ease;
+}
+
+.pi-job-calendar-container .fc-daygrid-day:hover {
+  background: rgba(21, 99, 73, 0.02);
+}
+
+.pi-job-calendar-container .fc-daygrid-day-number {
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 4px;
+}
+
+/* Today highlight */
+.pi-job-calendar-container .fc-day-today .fc-daygrid-day-number {
+  background: #156349;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Events - Exact match to main calendar */
+.pi-job-calendar-container .fc-event {
+  border-radius: 6px;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin: 1px 4px;
+}
+
+.pi-job-calendar-container .fc-event:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.pi-job-calendar-container .fc-event .fc-event-title {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Event statuses */
+.pi-job-calendar-container .fc-event.completed {
+  opacity: 0.6;
+}
+
+.pi-job-calendar-container .fc-event.cancelled {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+/* Time Grid */
+.pi-job-calendar-container .fc-timegrid-slot {
+  height: 48px;
+}
+
+.pi-job-calendar-container .fc-timegrid-slot-label {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.pi-job-calendar-container .fc-timegrid-now-indicator-line {
+  border-color: #ef4444;
+  border-width: 2px;
+}
+
+.pi-job-calendar-container .fc-timegrid-now-indicator-arrow {
+  color: #ef4444;
+}
+
+/* List View */
+.pi-job-calendar-container .fc-list {
+  border: none;
+}
+
+.pi-job-calendar-container .fc-list-empty {
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.pi-job-calendar-container .fc-list-day-cushion {
+  background: rgba(21, 99, 73, 0.05);
+  font-weight: 600;
+  color: #156349;
+}
+
+.pi-job-calendar-container .fc-list-event:hover td {
+  background: rgba(21, 99, 73, 0.03);
+}
+
+/* Popover */
+.pi-job-calendar-container .fc-more-popover {
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.pi-job-calendar-container .fc-more-popover .fc-popover-header {
+  background: #f1f5f9;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.pi-job-calendar-container .fc-more-link {
+  background: rgba(21, 99, 73, 0.08);
+  border: 1px dashed #156349;
+  color: #156349;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-weight: 600;
+  font-size: 11px;
+  transition: all 0.2s ease;
+}
+
+.pi-job-calendar-container .fc-more-link:hover {
+  background: #156349;
+  color: white;
+  border-style: solid;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Event Modal
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-event-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pi-job-event-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pi-job-event-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.pi-job-event-modal-header h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-job-event-modal-close {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #6b7280;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.pi-job-event-modal-close:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.pi-job-event-modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pi-job-event-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 140px);
+}
+
+.pi-job-event-form-row {
+  margin-bottom: 16px;
+}
+
+.pi-job-event-form-row label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.pi-job-event-form-row input,
+.pi-job-event-form-row select,
+.pi-job-event-form-row textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.pi-job-event-form-row input:focus,
+.pi-job-event-form-row select:focus,
+.pi-job-event-form-row textarea:focus {
+  outline: none;
+  border-color: #156349;
+  box-shadow: 0 0 0 3px rgba(21, 99, 73, 0.1);
+}
+
+.pi-job-event-form-row textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.pi-job-event-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pi-job-event-form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.pi-job-event-form-checkbox input {
+  width: auto;
+}
+
+.pi-job-event-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.pi-job-event-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.pi-job-event-modal-actions .pi-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pi-job-event-modal-actions .pi-btn-primary {
+  background: #156349;
+  color: white;
+  border: none;
+}
+
+.pi-job-event-modal-actions .pi-btn-primary:hover {
+  background: #0d4a36;
+}
+
+.pi-job-event-modal-actions .pi-btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.pi-job-event-modal-actions .pi-btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.pi-job-event-modal-actions .pi-btn-danger {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.pi-job-event-modal-actions .pi-btn-danger:hover {
+  background: #dc2626;
+  color: white;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Legend
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-calendar-legend {
+  display: flex;
+  gap: 20px;
+  padding: 12px 20px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.pi-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pi-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Toast Notifications
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-cal-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 14px 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1001;
+  animation: toastSlideIn 0.3s ease;
+  border-left: 4px solid #10b981;
+}
+
+.pi-job-cal-toast.error {
+  border-left-color: #ef4444;
+}
+
+.pi-job-cal-toast.warning {
+  border-left-color: #f59e0b;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.pi-job-cal-toast-message {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Responsive
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pi-job-calendar-wrapper {
+    height: auto;
+    min-height: 500px;
+  }
+
+  .pi-job-calendar-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .pi-job-calendar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pi-job-event-modal {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .pi-job-event-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Job Tasks Tab Styles
+   ========================================================================== */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Tasks Wrapper & Header
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-tasks-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  height: 100%;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pi-job-tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.pi-job-tasks-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-job-tasks-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Stats Cards
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-tasks-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.pi-stat-card {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.pi-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.pi-stat-card.overdue {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.pi-stat-card.overdue .pi-stat-value {
+  color: #dc2626;
+}
+
+.pi-stat-card.overdue .pi-stat-label {
+  color: #ef4444;
+}
+
+.pi-stat-value {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: #156349;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.pi-stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Filters
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-tasks-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+  gap: 16px;
+}
+
+.pi-job-tasks-search {
+  position: relative;
+  flex: 1;
+  max-width: 320px;
+}
+
+.pi-job-tasks-search svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.pi-job-tasks-search input {
+  width: 100%;
+  padding: 10px 12px 10px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.pi-job-tasks-search input:focus {
+  outline: none;
+  border-color: #156349;
+  box-shadow: 0 0 0 3px rgba(21, 99, 73, 0.1);
+}
+
+.pi-job-tasks-filter-group {
+  display: flex;
+  gap: 8px;
+}
+
+.pi-filter-btn {
+  padding: 8px 16px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pi-filter-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.pi-filter-btn.active {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+/* Error State */
+.pi-job-tasks-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #ef4444;
+  font-size: 14px;
+  text-align: center;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Tasks List
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-tasks-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  background: #f9fafb;
+}
+
+.pi-job-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: #e5e7eb;
+}
+
+.pi-job-task-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pi-job-task-item:hover {
+  background: #f9fafb;
+}
+
+.pi-job-task-item.completed {
+  opacity: 0.7;
+}
+
+.pi-job-task-item.completed .pi-job-task-title {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.pi-job-task-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pi-job-task-checkbox:hover {
+  border-color: #156349;
+}
+
+.pi-job-task-checkbox.checked {
+  background: #156349;
+  border-color: #156349;
+}
+
+.pi-job-task-checkbox.checked svg {
+  display: block;
+}
+
+.pi-job-task-checkbox svg {
+  display: none;
+  width: 14px;
+  height: 14px;
+  color: #ffffff;
+}
+
+.pi-job-task-content {
+  min-width: 0;
+}
+
+.pi-job-task-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pi-job-task-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.pi-job-task-due {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pi-job-task-due.overdue {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.pi-job-task-due.today {
+  color: #d97706;
+  font-weight: 500;
+}
+
+.pi-job-task-priority {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pi-job-task-priority.high {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.pi-job-task-priority.medium {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.pi-job-task-priority.low {
+  background: #ecfdf5;
+  color: #16a34a;
+}
+
+.pi-job-task-date {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.pi-job-task-actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pi-job-task-item:hover .pi-job-task-actions {
+  opacity: 1;
+}
+
+.pi-job-task-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pi-job-task-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.pi-job-task-btn.delete:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.pi-job-task-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Empty State
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-tasks-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.pi-empty-icon {
+  width: 80px;
+  height: 80px;
+  background: #f3f4f6;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.pi-empty-icon svg {
+  width: 40px;
+  height: 40px;
+  color: #9ca3af;
+}
+
+.pi-job-tasks-empty h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px;
+}
+
+.pi-job-tasks-empty p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 20px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Task Modal
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-task-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.2s ease;
+}
+
+.pi-job-task-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  margin: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+
+.pi-job-task-modal-overlay.active .pi-job-task-modal {
+  transform: scale(1);
+}
+
+.pi-job-task-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pi-job-task-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-job-task-modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Job Link Indicator in Modal */
+.pi-job-task-linked-to {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  color: #15803d;
+  font-size: 14px;
+}
+
+.pi-job-task-linked-to svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.pi-job-task-linked-to strong {
+  font-weight: 600;
+  color: #166534;
+}
+
+.pi-job-task-modal-close:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.pi-job-task-modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pi-job-task-modal-body {
+  padding: 24px;
+}
+
+.pi-job-task-form-row {
+  margin-bottom: 20px;
+}
+
+.pi-job-task-form-row label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.pi-job-task-form-row input,
+.pi-job-task-form-row select,
+.pi-job-task-form-row textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.pi-job-task-form-row input:focus,
+.pi-job-task-form-row select:focus,
+.pi-job-task-form-row textarea:focus {
+  outline: none;
+  border-color: #156349;
+  box-shadow: 0 0 0 3px rgba(21, 99, 73, 0.1);
+}
+
+.pi-job-task-form-row textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.pi-job-task-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pi-job-task-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 0 0 16px 16px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Toast Notification
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-job-tasks-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 20px;
+  background: #111827;
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(0);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.pi-job-tasks-toast.show {
+  opacity: 1;
+}
+
+.pi-job-tasks-toast.success {
+  background: #10b981;
+}
+
+.pi-job-tasks-toast.error {
+  background: #ef4444;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Responsive
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pi-job-tasks-wrapper {
+    min-height: auto;
+  }
+
+  .pi-job-tasks-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .pi-job-tasks-actions {
+    width: 100%;
+  }
+
+  .pi-job-tasks-stats {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 16px;
+  }
+
+  .pi-job-tasks-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pi-job-tasks-search {
+    max-width: none;
+  }
+
+  .pi-job-tasks-filter-group {
+    justify-content: center;
+  }
+
+  .pi-job-task-item {
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+  }
+
+  .pi-job-task-date,
+  .pi-job-task-actions {
+    display: none;
+  }
+
+  .pi-job-task-item:hover .pi-job-task-actions {
+    display: flex;
+    opacity: 1;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    padding-top: 12px;
+    border-top: 1px solid #e5e7eb;
+  }
+}
+
+/* ==========================================================================
+   Communications / Email System
+   ========================================================================== */
+
+.pi-communications-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 600px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pi-communications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.pi-communications-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-communications-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.pi-communications-content {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Sidebar (Email List) */
+.pi-communications-sidebar {
+  width: 320px;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.pi-communications-filters {
+  display: flex;
+  padding: 12px;
+  gap: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pi-filter-btn {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pi-filter-btn:hover {
+  background: #f3f4f6;
+}
+
+.pi-filter-btn.active {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.pi-communications-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.pi-communications-empty,
+.pi-communications-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #6b7280;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.pi-communications-error {
+  color: #ef4444;
+  background: #fef2f2;
+  border-radius: 8px;
+}
+
+/* Email List Items */
+.pi-email-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-bottom: 4px;
+}
+
+.pi-email-item:hover {
+  background: #f3f4f6;
+}
+
+.pi-email-item.sent {
+  border-left: 3px solid #10b981;
+}
+
+.pi-email-item.received {
+  border-left: 3px solid #3b82f6;
+}
+
+.pi-email-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.pi-email-item.sent .pi-email-item-icon {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.pi-email-item.received .pi-email-item-icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.pi-email-item-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.pi-email-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.pi-email-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.pi-email-from {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pi-email-date {
+  font-size: 12px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.pi-email-subject {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.pi-email-preview {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pi-email-attachment-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Main Content (Composer) */
+.pi-communications-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #ffffff;
+}
+
+/* Email Composer */
+.pi-email-composer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pi-composer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pi-composer-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-composer-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.pi-composer-form {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.pi-form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pi-form-row label {
+  width: 80px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.pi-form-row input[type="email"],
+.pi-form-row input[type="text"],
+.pi-form-row select {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+/* From Name + Email row with hint */
+.pi-form-row-from {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.pi-from-fields {
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  min-width: 300px;
+}
+
+.pi-from-fields input[type="text"] {
+  flex: 0 0 150px;
+}
+
+.pi-from-fields input[type="email"] {
+  flex: 1;
+  min-width: 200px;
+}
+
+.pi-from-hint {
+  width: 100%;
+  margin-top: 6px;
+  margin-left: 80px;
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* SMTP Status UI */
+.pi-from-status {
+  width: 100%;
+  margin-top: 8px;
+  margin-left: 80px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.pi-status-text {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.pi-status-text.pi-status-custom {
+  color: #059669;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.pi-btn-smtp-config {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pi-btn-smtp-config:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+/* Modal Overlay and Base Styles */
+.pi-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.pi-modal {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: pi-modal-in 0.2s ease-out;
+}
+
+@keyframes pi-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.pi-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.pi-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.pi-modal-close:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.pi-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 80px);
+}
+
+/* SMTP Modal Styles */
+.pi-smtp-intro {
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #f0f9ff;
+  border-left: 4px solid #0ea5e9;
+  border-radius: 4px;
+}
+
+.pi-smtp-intro p {
+  margin: 0 0 8px 0;
+  color: #0369a1;
+}
+
+.pi-smtp-note {
+  font-size: 12px;
+  color: #0c4a6e;
+}
+
+.pi-smtp-note a {
+  color: #0284c7;
+  text-decoration: underline;
+}
+
+.pi-field-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.pi-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+
+.pi-btn-danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+  margin-left: auto;
+}
+
+.pi-btn-danger:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.pi-smtp-test-results {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.pi-smtp-test-results.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.pi-smtp-test-results.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.pi-form-row input:focus,
+.pi-form-row select:focus,
+.pi-form-row textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.pi-form-row-full {
+  align-items: flex-start;
+}
+
+.pi-form-row-full label {
+  margin-top: 10px;
+}
+
+.pi-form-row textarea {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 200px;
+}
+
+.pi-attachments-area {
+  flex: 1;
+}
+
+.pi-attachments-area input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px dashed #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.pi-attachments-list {
+  margin-top: 8px;
+}
+
+.pi-attachment-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #374151;
+  margin-right: 8px;
+}
+
+/* Email View */
+.pi-email-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pi-email-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pi-email-view-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.pi-email-detail {
+  max-width: 800px;
+}
+
+.pi-email-detail-header {
+  margin-bottom: 20px;
+}
+
+.pi-email-detail-header h4 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pi-email-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.pi-email-meta strong {
+  color: #374151;
+  font-weight: 500;
+}
+
+.pi-email-detail-body {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.pi-email-detail-body pre {
+  margin: 0;
+  font-family: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.pi-email-attachments {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pi-email-attachment-list {
+  display: flex;
+  gap: 8px;
+}
+
+.pi-attachment-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: #dbeafe;
+  color: #2563eb;
+  border-radius: 6px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.pi-attachment-link:hover {
+  background: #bfdbfe;
+}
+
+/* Buttons */
+.pi-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.pi-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pi-btn-primary {
+  background: #111827;
+  color: #ffffff;
+}
+
+.pi-btn-primary:hover {
+  background: #374151;
+}
+
+.pi-btn-secondary {
+  background: #ffffff;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.pi-btn-secondary:hover {
+  background: #f3f4f6;
+}
+
+.pi-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading spinner */
+.pi-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: pi-spin 0.6s linear infinite;
+}
+
+@keyframes pi-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Toast notifications */
+.pi-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 9999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.pi-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.pi-toast-success {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.pi-toast-error {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.pi-toast-info {
+  background: #3b82f6;
+  color: #ffffff;
+}

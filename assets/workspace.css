@@ -1,0 +1,1301 @@
+/* ============================================
+   Planning Index CRM - Professional Pipeline
+   Version 5.0 - Unified CRM Ecosystem
+   ============================================ */
+
+/* === CSS Variables - Light Professional Theme === */
+:root {
+  /* Page Background - matches website */
+  --pi-bg-page: #f8fafc;
+  --pi-bg-card: #ffffff;
+  --pi-bg-card-hover: #fafbfc;
+  --pi-bg-column: #f1f5f9;
+  --pi-bg-header: #ffffff;
+  --pi-bg-input: #ffffff;
+  
+  /* Text Colors */
+  --pi-text-primary: #0f172a;
+  --pi-text-secondary: #475569;
+  --pi-text-muted: #94a3b8;
+  --pi-text-light: #cbd5e1;
+  
+  /* Brand Colors */
+  --pi-brand-primary: #156349;
+  --pi-brand-primary-hover: #0d4a36;
+  --pi-brand-secondary: #f59e0b;
+  
+  /* Border Colors */
+  --pi-border: #e2e8f0;
+  --pi-border-light: #f1f5f9;
+  --pi-border-dark: #cbd5e1;
+  
+  /* Status Colors */
+  --pi-success: #10b981;
+  --pi-success-bg: #d1fae5;
+  --pi-warning: #f59e0b;
+  --pi-warning-bg: #fef3c7;
+  --pi-danger: #ef4444;
+  --pi-danger-bg: #fee2e2;
+  --pi-info: #3b82f6;
+  --pi-info-bg: #dbeafe;
+  
+  /* Priority Colors */
+  --pi-priority-high: #ef4444;
+  --pi-priority-medium: #f59e0b;
+  --pi-priority-low: #10b981;
+  
+  /* Stage Colors */
+  --pi-stage-new: #6366f1;
+  --pi-stage-proposal: #8b5cf6;
+  --pi-stage-contacted: #06b6d4;
+  --pi-stage-negotiation: #f59e0b;
+  --pi-stage-won: #10b981;
+  
+  /* Shadows */
+  --pi-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --pi-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --pi-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --pi-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --pi-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --pi-shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  /* Border Radius */
+  --pi-radius-sm: 6px;
+  --pi-radius-md: 8px;
+  --pi-radius-lg: 12px;
+  --pi-radius-xl: 16px;
+  
+  /* Transitions */
+  --pi-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --pi-transition-fast: all 0.15s ease;
+  
+  /* Typography */
+  --pi-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --pi-font-mono: 'SF Mono', 'Fira Code', 'Monaco', monospace;
+}
+
+/* === Reset === */
+.pi-crm-wrapper *,
+.pi-crm-wrapper *::before,
+.pi-crm-wrapper *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* === Main Wrapper === */
+.pi-crm-wrapper {
+  font-family: var(--pi-font-sans);
+  background: var(--pi-bg-page);
+  min-height: 100vh;
+  color: var(--pi-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === Auth Required === */
+.pi-auth-required {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  color: var(--pi-text-secondary);
+  background: var(--pi-bg-page);
+  padding: 2rem;
+}
+
+.pi-auth-icon {
+  color: var(--pi-brand-primary);
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+.pi-auth-required h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--pi-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.pi-auth-required p {
+  font-size: 1rem;
+  color: var(--pi-text-muted);
+}
+
+/* === Header Bar === */
+.pi-crm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 0.875rem 1.5rem;
+  min-height: 64px;
+  background: var(--pi-bg-header);
+  border-bottom: 1px solid var(--pi-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--pi-shadow-xs);
+  gap: 1.5rem;
+}
+
+/* === Title + Stats Wrapper === */
+.pi-crm-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.pi-crm-title h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--pi-text-primary);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.pi-lead-count {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--pi-text-muted);
+  background: var(--pi-bg-column);
+  padding: 4px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* === Stats Bar - Horizontal Inline Layout === */
+.pi-stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.pi-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.pi-stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--pi-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.pi-stat-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--pi-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pi-stat-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--pi-border);
+  flex-shrink: 0;
+}
+
+/* Stats coloring */
+.pi-stat-item.total .pi-stat-value {
+  color: var(--pi-brand-primary);
+}
+
+.pi-stat-item.won .pi-stat-value {
+  color: var(--pi-success);
+}
+
+.pi-stat-item.proposals .pi-stat-value {
+  color: var(--pi-stage-proposal);
+}
+
+/* === Pipeline Switch (Leads | Jobs) === */
+.pi-pipeline-switch {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--pi-bg-column);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-md);
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.pi-pipeline-tab {
+  padding: 0 14px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: var(--pi-transition-fast);
+  font-family: inherit;
+}
+
+.pi-pipeline-tab:hover {
+  color: var(--pi-text-primary);
+}
+
+.pi-pipeline-tab.active {
+  background: var(--pi-bg-card);
+  color: var(--pi-brand-primary);
+  box-shadow: var(--pi-shadow-xs);
+}
+
+/* === CRM Actions (RIGHT SIDE) === */
+.pi-crm-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Board visibility by view - both boards in DOM; only one visible */
+#pi-workspace-board-jobs {
+  display: none;
+}
+.pi-crm-wrapper.pi-view-leads #pi-workspace-board {
+  display: flex !important;
+}
+.pi-crm-wrapper.pi-view-leads #pi-workspace-board-jobs {
+  display: none !important;
+}
+.pi-crm-wrapper.pi-view-jobs #pi-workspace-board {
+  display: none !important;
+}
+.pi-crm-wrapper.pi-view-jobs #pi-workspace-board-jobs {
+  display: flex !important;
+}
+
+/* Filter dropdowns: show leads filter by default, jobs filter when on Jobs view */
+.pi-filter-dropdown-jobs {
+  display: none;
+}
+.pi-crm-wrapper.pi-view-jobs #pi-filter-dropdown-leads {
+  display: none;
+}
+.pi-crm-wrapper.pi-view-jobs .pi-filter-dropdown-jobs {
+  display: block;
+}
+
+/* === Search Container === */
+.pi-search-container {
+  position: relative;
+  width: clamp(160px, 15vw, 240px);
+  display: flex;
+  align-items: center;
+}
+
+.pi-search-icon {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--pi-text-muted);
+  pointer-events: none;
+}
+
+.pi-search-container input {
+  width: 100%;
+  height: 36px;
+  padding: 0 10px 0 34px;
+  background: var(--pi-bg-input);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-md);
+  color: var(--pi-text-primary);
+  font-size: 0.8125rem;
+  font-family: inherit;
+  transition: var(--pi-transition);
+}
+
+.pi-search-container input::placeholder {
+  color: var(--pi-text-muted);
+}
+
+.pi-search-container input:focus {
+  outline: none;
+  border-color: var(--pi-brand-primary);
+  box-shadow: 0 0 0 3px rgba(21, 99, 73, 0.1);
+}
+
+/* === Filter Dropdown === */
+.pi-filter-dropdown {
+  position: relative;
+}
+
+.pi-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  background: var(--pi-bg-input);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-md);
+  color: var(--pi-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--pi-transition);
+  font-family: inherit;
+}
+
+.pi-filter-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.pi-filter-btn svg:last-child {
+  width: 10px;
+  height: 10px;
+  margin-left: 2px;
+}
+
+.pi-filter-btn:hover {
+  background: var(--pi-bg-column);
+  border-color: var(--pi-border-dark);
+  color: var(--pi-text-primary);
+}
+
+/* === Filter Menu === */
+.pi-filter-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: clamp(180px, 20vw, 240px);
+  background: var(--pi-bg-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-lg);
+  box-shadow: var(--pi-shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: var(--pi-transition);
+  z-index: 200;
+  padding: 6px;
+  overflow: hidden;
+}
+
+.pi-filter-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.pi-filter-option {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  width: 100%;
+  padding: 10px 15px;
+  background: transparent;
+  border: none;
+  border-radius: var(--pi-radius-sm);
+  text-align: left;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  color: var(--pi-text-secondary);
+  cursor: pointer;
+  transition: var(--pi-transition-fast);
+}
+
+.pi-filter-option svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.pi-filter-option:hover {
+  background: var(--pi-bg-column);
+  color: var(--pi-text-primary);
+}
+
+.pi-filter-option:hover svg {
+  opacity: 1;
+}
+
+.pi-filter-option.active {
+  background: rgba(21, 99, 73, 0.08);
+  color: var(--pi-brand-primary);
+  font-weight: 500;
+}
+
+.pi-filter-option.active svg {
+  opacity: 1;
+  color: var(--pi-brand-primary);
+}
+
+
+/* === Pipeline Board (Leads & Jobs use identical layout) === */
+#pi-workspace-board,
+#pi-workspace-board-jobs {
+  display: flex;
+  gap: clamp(4px, 0.8vw, 12px);
+  padding: clamp(0.5rem, 1vw, 1.25rem);
+  overflow-x: auto;
+  height: calc(100vh - 62px);
+  align-items: stretch;
+  background: var(--pi-bg-page);
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+/* === Columns === */
+.pi-workspace-column {
+  flex: 1 1 clamp(240px, 20vw, 320px);
+  min-width: clamp(240px, 20vw, 320px);
+  max-width: clamp(300px, 25vw, 400px);
+  background: var(--pi-bg-column);
+  border-radius: var(--pi-radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pi-workspace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(6px, 0.8vw, 12px) clamp(8px, 1vw, 14px);
+  background: var(--pi-bg-card);
+  border-bottom: 1px solid var(--pi-border-light);
+  position: relative;
+}
+
+.pi-workspace-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--stage-color);
+}
+
+.pi-header-left {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.5vw, 8px);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pi-stage-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(18px, 1.6vw, 26px);
+  height: clamp(18px, 1.6vw, 26px);
+  background: color-mix(in srgb, var(--stage-color) 12%, transparent);
+  border-radius: var(--pi-radius-sm);
+  color: var(--stage-color);
+  flex-shrink: 0;
+}
+
+.pi-stage-icon svg {
+  width: clamp(9px, 0.8vw, 13px);
+  height: clamp(9px, 0.8vw, 13px);
+}
+
+.pi-workspace-header h3 {
+  font-size: clamp(0.6rem, 0.9vw, 0.8125rem);
+  font-weight: 600;
+  color: var(--pi-text-primary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pi-column-meta {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.6vw, 10px);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.pi-column-value {
+  font-size: clamp(0.5rem, 0.7vw, 0.75rem);
+  font-weight: 600;
+  color: var(--stage-color);
+  font-family: var(--pi-font-mono);
+  background: color-mix(in srgb, var(--stage-color) 10%, transparent);
+  padding: clamp(2px, 0.25vw, 3px) clamp(4px, 0.5vw, 8px);
+  border-radius: 6px;
+}
+
+.pi-workspace-count {
+  font-size: clamp(0.5rem, 0.7vw, 0.75rem);
+  font-weight: 600;
+  background: var(--pi-bg-column);
+  color: var(--pi-text-secondary);
+  padding: clamp(2px, 0.25vw, 3px) clamp(5px, 0.6vw, 10px);
+  border-radius: 10px;
+  min-width: clamp(18px, 1.5vw, 24px);
+  text-align: center;
+}
+
+/* === Column List === */
+.pi-workspace-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: clamp(4px, 0.6vw, 10px);
+  min-height: 100px;
+}
+
+.pi-workspace-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.pi-workspace-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pi-workspace-list::-webkit-scrollbar-thumb {
+  background: var(--pi-border);
+  border-radius: 2px;
+}
+
+.pi-workspace-list::-webkit-scrollbar-thumb:hover {
+  background: var(--pi-border-dark);
+}
+
+/* === Empty State === */
+.pi-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 1.5vw, 2rem) clamp(0.5rem, 0.8vw, 1rem);
+  color: var(--pi-text-muted);
+  font-size: clamp(0.625rem, 0.75vw, 0.8125rem);
+  text-align: center;
+}
+
+.pi-empty-state svg {
+  width: clamp(20px, 2vw, 32px);
+  height: clamp(20px, 2vw, 32px);
+  margin-bottom: clamp(4px, 0.5vw, 8px);
+  opacity: 0.4;
+}
+
+.pi-workspace-list:has(.pi-workspace-item) .pi-empty-state {
+  display: none;
+}
+
+/* === Lead Cards === */
+.pi-workspace-item {
+  background: var(--pi-bg-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-md);
+  padding: clamp(6px, 0.8vw, 12px);
+  margin-bottom: clamp(4px, 0.5vw, 8px);
+  cursor: grab;
+  transition: var(--pi-transition);
+  position: relative;
+}
+
+.pi-workspace-item:hover {
+  border-color: var(--pi-border-dark);
+  box-shadow: var(--pi-shadow-card-hover);
+  transform: translateY(-1px);
+}
+
+.pi-workspace-item:active {
+  cursor: grabbing;
+}
+
+.pi-workspace-item,
+.pi-workspace-item * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Priority Indicator */
+.pi-workspace-item[data-priority="high"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--pi-priority-high);
+  border-radius: 3px 0 0 3px;
+}
+
+.pi-workspace-item[data-priority="medium"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--pi-priority-medium);
+  border-radius: 3px 0 0 3px;
+}
+
+.pi-workspace-item[data-priority="low"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--pi-priority-low);
+  border-radius: 3px 0 0 3px;
+}
+
+/* Highlighted Cards */
+.pi-workspace-item.highlighted {
+  border-color: var(--pi-warning);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.03) 0%, var(--pi-bg-card) 100%);
+}
+
+/* Overdue Cards */
+.pi-workspace-item.pi-overdue {
+  border-color: var(--pi-danger);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.03) 0%, var(--pi-bg-card) 100%);
+}
+
+.pi-workspace-item.pi-overdue .pi-card-address::before {
+  content: 'OVERDUE';
+  display: inline-block;
+  background: var(--pi-danger);
+  color: white;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Removed ::after indicator - buttons now positioned in corner */
+
+/* Invoice Generated Indicator - Removed emoji, using only meta tag */
+
+/* === Card Header === */
+.pi-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(4px, 0.5vw, 8px);
+  margin-bottom: clamp(4px, 0.5vw, 8px);
+}
+
+.pi-card-ref {
+  font-family: var(--pi-font-mono);
+  font-size: clamp(0.5rem, 0.7vw, 0.75rem);
+  font-weight: 600;
+  color: var(--pi-brand-primary);
+  background: rgba(21, 99, 73, 0.08);
+  padding: clamp(2px, 0.25vw, 3px) clamp(4px, 0.5vw, 8px);
+  border-radius: 4px;
+  letter-spacing: -0.01em;
+}
+
+/* Apple-style control dots - positioned in corner */
+.pi-card-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: var(--pi-transition-fast);
+  align-items: center;
+  z-index: 2;
+}
+
+.pi-workspace-item:hover .pi-card-actions {
+  opacity: 1;
+}
+
+/* Always show buttons on highlighted cards */
+.pi-workspace-item.highlighted .pi-card-actions {
+  opacity: 1;
+}
+
+/* Base dot style - Apple window control inspired */
+.pi-card-actions .pi-btn-icon {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--pi-transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-card-actions .pi-btn-icon svg {
+  display: none;
+}
+
+/* Orange highlight dot */
+.pi-card-actions .pi-toggle-highlight {
+  background: #f59e0b;
+  opacity: 0.7;
+}
+
+.pi-card-actions .pi-toggle-highlight:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.pi-card-actions .pi-toggle-highlight.active {
+  opacity: 1;
+  box-shadow: 0 0 4px rgba(245, 158, 11, 0.5);
+}
+
+/* Red delete dot - more saturated red */
+.pi-card-actions .pi-remove {
+  background: #dc2626;
+  opacity: 0.7;
+}
+
+.pi-card-actions .pi-remove:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* Green QuickBooks sync dot */
+.pi-card-actions .pi-qbo-sync {
+  background: #2ca01c;
+  opacity: 0.7;
+}
+
+.pi-card-actions .pi-qbo-sync:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.pi-card-actions .pi-qbo-sync.syncing {
+  opacity: 1;
+  animation: pulse 1s infinite;
+}
+
+.pi-card-actions .pi-qbo-sync.synced {
+  opacity: 1;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* === Card Body === */
+.pi-card-body {
+  margin-bottom: clamp(6px, 0.6vw, 10px);
+}
+
+.pi-card-address {
+  font-size: clamp(0.625rem, 0.75vw, 0.8125rem);
+  font-weight: 500;
+  color: var(--pi-text-primary);
+  line-height: 1.4;
+  margin-bottom: clamp(2px, 0.3vw, 4px);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  overflow: hidden;
+}
+
+.pi-card-date {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 0.3vw, 4px);
+  font-size: clamp(0.5rem, 0.6vw, 0.6875rem);
+  color: var(--pi-text-muted);
+}
+
+.pi-card-date svg {
+  width: clamp(8px, 0.7vw, 11px);
+  height: clamp(8px, 0.7vw, 11px);
+}
+
+/* === Card Meta === */
+.pi-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(2px, 0.3vw, 5px);
+  margin-bottom: clamp(6px, 0.6vw, 10px);
+}
+
+.pi-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(2px, 0.2vw, 3px);
+  padding: clamp(1px, 0.15vw, 2px) clamp(3px, 0.4vw, 6px);
+  background: var(--pi-bg-column);
+  border-radius: 4px;
+  font-size: clamp(0.4375rem, 0.55vw, 0.625rem);
+  font-weight: 500;
+  color: var(--pi-text-secondary);
+}
+
+.pi-meta-tag svg {
+  width: clamp(6px, 0.55vw, 9px);
+  height: clamp(6px, 0.55vw, 9px);
+}
+
+.pi-meta-tag.value {
+  color: var(--pi-brand-primary);
+  background: rgba(21, 99, 73, 0.08);
+}
+
+.pi-meta-tag.tasks {
+  color: var(--pi-info);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.pi-meta-tag.due {
+  color: var(--pi-warning);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.pi-meta-tag.overdue {
+  color: var(--pi-danger);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.pi-meta-tag.contact {
+  color: var(--pi-success);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.pi-meta-tag.invoice {
+  color: var(--pi-stage-proposal);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+/* === Card Footer === */
+.pi-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: clamp(6px, 0.6vw, 10px);
+  border-top: 1px solid var(--pi-border-light);
+}
+
+.pi-card-owner {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 0.4vw, 6px);
+}
+
+.pi-owner-avatar {
+  width: clamp(16px, 1.3vw, 20px);
+  height: clamp(16px, 1.3vw, 20px);
+  background: linear-gradient(135deg, var(--pi-brand-primary) 0%, var(--pi-brand-primary-hover) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.4rem, 0.45vw, 0.5625rem);
+  font-weight: 600;
+  color: white;
+}
+
+/* === View Lead Button === */
+.pi-view-lead {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(2px, 0.3vw, 4px);
+  padding: clamp(3px, 0.4vw, 5px) clamp(6px, 0.6vw, 10px);
+  background: var(--pi-brand-primary);
+  color: white;
+  font-size: clamp(0.5rem, 0.6vw, 0.6875rem);
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: var(--pi-radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--pi-transition);
+}
+
+.pi-view-lead svg {
+  width: clamp(8px, 0.7vw, 11px);
+  height: clamp(8px, 0.7vw, 11px);
+}
+
+.pi-view-lead:hover {
+  background: var(--pi-brand-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(21, 99, 73, 0.25);
+}
+
+/* === Action Buttons === */
+.pi-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: var(--pi-transition-fast);
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.pi-btn-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--pi-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-btn-icon svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.pi-btn-icon:hover {
+  background: var(--pi-bg-column);
+  color: var(--pi-text-secondary);
+}
+
+.pi-toggle-highlight:hover {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.pi-toggle-highlight.active {
+  color: var(--pi-warning);
+}
+
+.pi-remove:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* === Drag States === */
+.pi-workspace-ghost {
+  opacity: 0.5;
+  background: var(--pi-bg-column);
+  border: 2px dashed var(--pi-brand-primary);
+  border-radius: var(--pi-radius-md);
+}
+
+.pi-workspace-chosen {
+  transform: rotate(2deg) scale(1.02);
+  box-shadow: var(--pi-shadow-lg);
+  cursor: grabbing !important;
+}
+
+.pi-workspace-drag {
+  cursor: grabbing !important;
+}
+
+/* === Toast Notifications === */
+.pi-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: var(--pi-bg-card);
+  border: 1px solid var(--pi-border);
+  border-radius: var(--pi-radius-md);
+  color: var(--pi-text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--pi-shadow-lg);
+  z-index: 1000;
+  animation: toastIn 0.3s ease;
+}
+
+.pi-toast-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-toast.success {
+  border-left: 3px solid var(--pi-success);
+}
+
+.pi-toast.success .pi-toast-icon {
+  color: var(--pi-success);
+}
+
+.pi-toast.error {
+  border-left: 3px solid var(--pi-danger);
+}
+
+.pi-toast.error .pi-toast-icon {
+  color: var(--pi-danger);
+}
+
+.pi-toast.info {
+  border-left: 3px solid var(--pi-info);
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* === Column Empty State Background (always present, shown when no leads) === */
+.pi-column-empty-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--pi-text-muted);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+.pi-column-empty-bg svg {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 6px;
+  opacity: 0.5;
+  stroke: var(--pi-text-muted);
+}
+
+.pi-column-empty-bg span {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Column body needs relative positioning for the background */
+.pi-workspace-body {
+  position: relative;
+}
+
+/* Cards should be above the background */
+.pi-workspace-item {
+  position: relative;
+  z-index: 1;
+}
+
+/* === Loading State === */
+.pi-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.pi-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--pi-border);
+  border-top-color: var(--pi-brand-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Responsive === */
+
+/* Hide stats bar on screens under 1200px to save horizontal space */
+@media (max-width: 1199px) {
+  .pi-stats-bar {
+    display: none;
+  }
+}
+
+/* Adjust header on smaller screens */
+@media (max-width: 1024px) {
+  .pi-crm-header {
+    padding: 0.75rem 1rem;
+    min-height: 56px;
+    gap: 1rem;
+  }
+  
+  .pi-crm-title h1 {
+    font-size: 1rem;
+  }
+  
+  .pi-lead-count {
+    font-size: 0.6875rem;
+    padding: 3px 8px;
+  }
+  
+  .pi-search-container input {
+    height: 32px;
+    font-size: 0.75rem;
+  }
+  
+  .pi-filter-btn {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 0.75rem;
+  }
+  
+  #pi-workspace-board {
+    height: calc(100vh - 56px);
+  }
+  
+  /* Limit address to 1 line on compact screens */
+  .pi-card-address {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+  
+  .pi-card-actions .pi-btn-icon {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    min-height: 10px;
+  }
+}
+
+/* Mobile - vertical scroll layout (under 768px) */
+@media (max-width: 767px) {
+  .pi-crm-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+    height: auto;
+  }
+
+  .pi-crm-title {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .pi-stats-bar {
+    display: none;
+  }
+
+  .pi-crm-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    margin-left: 0;
+  }
+
+  .pi-search-container {
+    width: 100%;
+  }
+
+  .pi-filter-dropdown {
+    width: 100%;
+  }
+
+  .pi-filter-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .pi-view-toggle {
+    display: none;
+  }
+
+  #pi-workspace-board {
+    flex-direction: column;
+    padding: 12px;
+    height: auto;
+    overflow-x: true;
+    overflow-y: auto;
+  }
+
+  .pi-workspace-column {
+    flex: none;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+  
+  .pi-workspace-list {
+    max-height: 300px;
+  }
+}
+
+/* === Print Styles === */
+@media print {
+  .pi-crm-wrapper {
+    background: white;
+  }
+
+  .pi-crm-actions,
+  .pi-card-actions,
+  .pi-view-lead {
+    display: none !important;
+  }
+
+  .pi-workspace-item {
+    break-inside: avoid;
+    border: 1px solid #ddd;
+    box-shadow: none;
+  }
+  
+  #pi-workspace-board {
+    height: auto;
+    overflow: visible;
+  }
+}
+
+/* === Focus States === */
+.pi-btn:focus-visible,
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--pi-brand-primary);
+  outline-offset: 2px;
+}

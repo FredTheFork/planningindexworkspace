@@ -1,0 +1,1188 @@
+/* ==========================================================================
+   Planning Index Workspace - Unified Dashboard v3.0
+   Professional Overview Dashboard - CRM Style
+   Matches Expenses v3, Materials v3, Calendar v3, and Team v3 Design System
+   ========================================================================== */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Design Tokens (Unified System)
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-dashboard-wrapper-v3 {
+  /* Brand Colors */
+  --pi-brand: #156349;
+  --pi-brand-hover: #0d4a36;
+  --pi-brand-light: #d1fae5;
+  --pi-brand-glow: rgba(21, 99, 73, 0.12);
+
+  /* Status Colors */
+  --pi-success: #10b981;
+  --pi-success-light: #d1fae5;
+  --pi-warning: #f59e0b;
+  --pi-warning-light: #fef3c7;
+  --pi-danger: #ef4444;
+  --pi-danger-light: #fef2f2;
+  --pi-info: #3b82f6;
+  --pi-info-light: #dbeafe;
+  --pi-purple: #8b5cf6;
+  --pi-purple-light: #ede9fe;
+  --pi-orange: #f97316;
+  --pi-orange-light: #ffedd5;
+
+  /* Neutrals */
+  --pi-bg: #f8fafc;
+  --pi-card: #ffffff;
+  --pi-surface: #f1f5f9;
+  --pi-border: #e2e8f0;
+  --pi-border-light: #f1f5f9;
+  --pi-text: #0f172a;
+  --pi-text-secondary: #475569;
+  --pi-text-muted: #94a3b8;
+  --pi-text-light: #cbd5e1;
+
+  /* Typography */
+  --pi-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --pi-mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing & Radius */
+  --pi-radius-sm: 6px;
+  --pi-radius: 8px;
+  --pi-radius-md: 10px;
+  --pi-radius-lg: 12px;
+  --pi-radius-xl: 16px;
+
+  /* Shadows */
+  --pi-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --pi-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --pi-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --pi-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --pi-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+  /* Layout */
+  --header-height: 64px;
+  --sidebar-width: 260px;
+
+  font-family: var(--pi-font);
+  color: var(--pi-text);
+  background: var(--pi-bg);
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Reset & Base
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-dashboard-wrapper-v3 *,
+.pi-dashboard-wrapper-v3 *::before,
+.pi-dashboard-wrapper-v3 *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Auth Required State
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-auth-required {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  color: var(--pi-text-secondary);
+  background: var(--pi-bg);
+  padding: 2rem;
+}
+
+.pi-db-auth-icon {
+  color: var(--pi-brand);
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+  width: 48px;
+  height: 48px;
+}
+
+.pi-db-auth-required h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--pi-text);
+  margin-bottom: 0.5rem;
+}
+
+.pi-db-auth-required p {
+  font-size: 1rem;
+  color: var(--pi-text-muted);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   SaaS Header (Dark - Matching Calendar/Materials)
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 24px;
+  background: #1b2534;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 16px;
+}
+
+.pi-db-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.pi-db-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pi-db-brand-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--pi-brand);
+  border-radius: var(--pi-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.pi-db-brand-text h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.pi-db-brand-text p {
+  font-size: 12px;
+  color: var(--pi-text-muted);
+  margin: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Navigation Tabs
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.pi-db-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--pi-radius);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.pi-db-nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.pi-db-nav-item.active {
+  background: var(--pi-brand);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.pi-db-nav-item svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Header Right Actions
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Search */
+.pi-db-search-wrapper {
+  position: relative;
+}
+
+.pi-db-search-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 240px;
+  height: 40px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--pi-radius);
+  transition: all 0.2s ease;
+}
+
+.pi-db-search-input:focus-within {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pi-db-search-input svg {
+  width: 18px;
+  height: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+.pi-db-search-input input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  padding: 0;
+}
+
+.pi-db-search-input input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Icon Buttons */
+.pi-db-icon-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  border-radius: var(--pi-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.pi-db-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.pi-db-icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Notification Badge */
+.pi-db-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--pi-danger);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #1b2534;
+}
+
+/* Add Button */
+.pi-db-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  background: var(--pi-brand);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--pi-radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(21, 99, 73, 0.3);
+}
+
+.pi-db-add-btn:hover {
+  background: var(--pi-brand-hover);
+  box-shadow: 0 4px 12px rgba(21, 99, 73, 0.4);
+  transform: translateY(-1px);
+}
+
+.pi-db-add-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Main Content Container
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-main {
+  flex: 1;
+  padding: 24px;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Tab Content
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.pi-db-tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Dashboard Header (Within Tab)
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--pi-border);
+}
+
+.pi-db-section-title h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--pi-text);
+  margin: 0 0 4px 0;
+}
+
+.pi-db-section-title p {
+  font-size: 14px;
+  color: var(--pi-text-muted);
+  margin: 0;
+}
+
+.pi-db-section-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   KPI Cards Grid
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.pi-db-kpi-card {
+  background: var(--pi-card);
+  border-radius: var(--pi-radius-lg);
+  padding: 20px;
+  box-shadow: var(--pi-shadow);
+  border: 1px solid var(--pi-border);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pi-db-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pi-shadow-md);
+}
+
+.pi-db-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.pi-db-kpi-card.success::before { background: var(--pi-success); }
+.pi-db-kpi-card.warning::before { background: var(--pi-warning); }
+.pi-db-kpi-card.danger::before { background: var(--pi-danger); }
+.pi-db-kpi-card.info::before { background: var(--pi-info); }
+.pi-db-kpi-card.purple::before { background: var(--pi-purple); }
+.pi-db-kpi-card.brand::before { background: var(--pi-brand); }
+
+.pi-db-kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.pi-db-kpi-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--pi-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pi-db-kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--pi-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-db-kpi-icon.success { background: var(--pi-success-light); color: var(--pi-success); }
+.pi-db-kpi-icon.warning { background: var(--pi-warning-light); color: var(--pi-warning); }
+.pi-db-kpi-icon.danger { background: var(--pi-danger-light); color: var(--pi-danger); }
+.pi-db-kpi-icon.info { background: var(--pi-info-light); color: var(--pi-info); }
+.pi-db-kpi-icon.purple { background: var(--pi-purple-light); color: var(--pi-purple); }
+.pi-db-kpi-icon.brand { background: var(--pi-brand-light); color: var(--pi-brand); }
+
+.pi-db-kpi-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pi-db-kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--pi-text);
+  margin-bottom: 8px;
+  line-height: 1;
+  font-family: var(--pi-mono);
+}
+
+.pi-db-kpi-subtitle {
+  font-size: 13px;
+  color: var(--pi-text-secondary);
+}
+
+.pi-db-kpi-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: var(--pi-radius-sm);
+}
+
+.pi-db-kpi-trend.up {
+  background: var(--pi-success-light);
+  color: var(--pi-success);
+}
+
+.pi-db-kpi-trend.down {
+  background: var(--pi-danger-light);
+  color: var(--pi-danger);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Main Dashboard Grid (2-column layout)
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.pi-db-full-width {
+  grid-column: 1 / -1;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Cards
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-card {
+  background: var(--pi-card);
+  border-radius: var(--pi-radius-lg);
+  box-shadow: var(--pi-shadow);
+  border: 1px solid var(--pi-border);
+  overflow: hidden;
+}
+
+.pi-db-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--pi-border-light);
+  background: linear-gradient(to right, var(--pi-card), var(--pi-surface));
+}
+
+.pi-db-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--pi-text);
+}
+
+.pi-db-card-title svg {
+  width: 18px;
+  height: 18px;
+  color: var(--pi-brand);
+}
+
+.pi-db-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pi-db-card-body {
+  padding: 20px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Chart Containers
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.pi-db-chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--pi-border-light);
+}
+
+.pi-db-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--pi-text-secondary);
+}
+
+.pi-db-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Activity Feed
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-activity-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.pi-db-activity-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.pi-db-activity-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pi-db-activity-list::-webkit-scrollbar-thumb {
+  background: var(--pi-border);
+  border-radius: 2px;
+}
+
+.pi-db-activity-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--pi-border-light);
+  transition: background 0.2s ease;
+}
+
+.pi-db-activity-item:last-child {
+  border-bottom: none;
+}
+
+.pi-db-activity-item:hover {
+  background: var(--pi-surface);
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.pi-db-activity-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--pi-brand-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--pi-brand);
+  flex-shrink: 0;
+}
+
+.pi-db-activity-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pi-db-activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.pi-db-activity-text {
+  font-size: 14px;
+  color: var(--pi-text);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.pi-db-activity-text strong {
+  font-weight: 600;
+  color: var(--pi-text);
+}
+
+.pi-db-activity-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--pi-text-muted);
+}
+
+.pi-db-activity-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--pi-radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.pi-db-activity-type.lead { background: var(--pi-info-light); color: var(--pi-info); }
+.pi-db-activity-type.job { background: var(--pi-warning-light); color: var(--pi-warning); }
+.pi-db-activity-type.task { background: var(--pi-purple-light); color: var(--pi-purple); }
+.pi-db-activity-type.expense { background: var(--pi-success-light); color: var(--pi-success); }
+.pi-db-activity-type.timesheet { background: var(--pi-brand-light); color: var(--pi-brand); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Quick Stats Row
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-quick-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.pi-db-quick-stat {
+  background: var(--pi-card);
+  border-radius: var(--pi-radius);
+  padding: 16px;
+  border: 1px solid var(--pi-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.pi-db-quick-stat:hover {
+  border-color: var(--pi-brand);
+  box-shadow: var(--pi-shadow-md);
+}
+
+.pi-db-quick-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--pi-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pi-db-quick-stat-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.pi-db-quick-stat-content {
+  flex: 1;
+}
+
+.pi-db-quick-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pi-text);
+  line-height: 1.2;
+}
+
+.pi-db-quick-stat-label {
+  font-size: 12px;
+  color: var(--pi-text-muted);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Pipeline Preview
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-pipeline-preview {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pi-db-pipeline-stage {
+  background: var(--pi-card);
+  border-radius: var(--pi-radius);
+  padding: 16px;
+  border: 1px solid var(--pi-border);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.pi-db-pipeline-stage:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pi-shadow-md);
+}
+
+.pi-db-stage-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pi-text-secondary);
+}
+
+.pi-db-stage-header svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pi-db-stage-count {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--pi-text);
+  margin-bottom: 4px;
+}
+
+.pi-db-stage-value {
+  font-size: 12px;
+  color: var(--pi-text-muted);
+  font-family: var(--pi-mono);
+}
+
+/* Stage Colors */
+.pi-db-stage-new .pi-db-stage-count { color: #6366f1; }
+.pi-db-stage-proposal .pi-db-stage-count { color: #8b5cf6; }
+.pi-db-stage-contacted .pi-db-stage-count { color: #06b6d4; }
+.pi-db-stage-negotiation .pi-db-stage-count { color: #f59e0b; }
+.pi-db-stage-won .pi-db-stage-count { color: var(--pi-success); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Data Tables
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-table-wrapper {
+  overflow-x: auto;
+}
+
+.pi-db-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.pi-db-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--pi-text-muted);
+  background: var(--pi-surface);
+  border-bottom: 1px solid var(--pi-border);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+}
+
+.pi-db-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--pi-border-light);
+  color: var(--pi-text);
+  vertical-align: middle;
+}
+
+.pi-db-table tbody tr:hover {
+  background: var(--pi-surface);
+}
+
+.pi-db-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Status Badges
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.pi-db-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.pi-db-status-draft { background: var(--pi-surface); color: var(--pi-text-muted); }
+.pi-db-status-pending { background: var(--pi-warning-light); color: var(--pi-warning); }
+.pi-db-status-approved { background: var(--pi-success-light); color: var(--pi-success); }
+.pi-db-status-rejected { background: var(--pi-danger-light); color: var(--pi-danger); }
+.pi-db-status-active { background: var(--pi-info-light); color: var(--pi-info); }
+.pi-db-status-completed { background: var(--pi-success-light); color: var(--pi-success); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Buttons
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--pi-radius);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.pi-db-btn-primary {
+  background: var(--pi-brand);
+  color: white;
+}
+
+.pi-db-btn-primary:hover {
+  background: var(--pi-brand-hover);
+  box-shadow: var(--pi-shadow-md);
+}
+
+.pi-db-btn-secondary {
+  background: var(--pi-surface);
+  color: var(--pi-text);
+  border: 1px solid var(--pi-border);
+}
+
+.pi-db-btn-secondary:hover {
+  background: var(--pi-border-light);
+}
+
+.pi-db-btn-ghost {
+  background: transparent;
+  color: var(--pi-text-secondary);
+  border: 1px solid transparent;
+}
+
+.pi-db-btn-ghost:hover {
+  background: var(--pi-surface);
+  color: var(--pi-text);
+}
+
+.pi-db-btn-sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.pi-db-btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.pi-db-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Empty States
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--pi-text-muted);
+}
+
+.pi-db-empty svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+
+.pi-db-empty h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--pi-text);
+  margin-bottom: 8px;
+}
+
+.pi-db-empty p {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Notifications
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-notification {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  padding: 16px 20px;
+  background: var(--pi-card);
+  border-radius: var(--pi-radius-lg);
+  box-shadow: var(--pi-shadow-xl);
+  border: 1px solid var(--pi-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+  max-width: 400px;
+}
+
+.pi-db-notification.success {
+  border-left: 4px solid var(--pi-success);
+}
+
+.pi-db-notification.error {
+  border-left: 4px solid var(--pi-danger);
+}
+
+.pi-db-notification.warning {
+  border-left: 4px solid var(--pi-warning);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Loading States
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.pi-db-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(2px);
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pi-db-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--pi-border);
+  border-top-color: var(--pi-brand);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Responsive
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .pi-db-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pi-db-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pi-db-pipeline-preview {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pi-db-quick-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .pi-db-header {
+    padding: 0 16px;
+  }
+
+  .pi-db-nav {
+    display: none;
+  }
+
+  .pi-db-search-input {
+    width: 40px;
+    overflow: hidden;
+  }
+
+  .pi-db-search-input input {
+    opacity: 0;
+  }
+
+  .pi-db-main {
+    padding: 16px;
+  }
+
+  .pi-db-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pi-db-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .pi-db-pipeline-preview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pi-db-quick-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .pi-db-chart-container {
+    height: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pi-db-pipeline-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .pi-db-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Focus States (Accessibility)
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-btn:focus-visible,
+.pi-db-nav-item:focus-visible,
+.pi-db-icon-btn:focus-visible,
+.pi-db-search-input input:focus-visible {
+  outline: 2px solid var(--pi-brand);
+  outline-offset: 2px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   SVG Icon Alignment Fix (Critical for preventing text dip)
+   ────────────────────────────────────────────────────────────────────────── */
+.pi-db-btn svg,
+.pi-db-nav-item svg,
+.pi-db-icon-btn svg,
+.pi-db-card-title svg,
+.pi-db-kpi-icon svg,
+.pi-db-quick-stat-icon svg,
+.pi-db-activity-type svg,
+.pi-db-stage-header svg,
+.pi-db-search-input svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Ensure text after SVG doesn't dip - use span wrapper */
+.pi-db-btn > span,
+.pi-db-nav-item > span,
+.pi-db-card-title > span {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
